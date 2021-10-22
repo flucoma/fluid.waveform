@@ -1,0 +1,23 @@
+{
+  "name": "@babel/plugin-max-exports",
+  "version": "7.10.4",
+  "description": "This plugin transforms module.exports for compatability with JS in Cycling 74's Max",
+  "license": "BSD3",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "src/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {
+    "@babel/helper-plugin-utils": "workspace:^7.10.4"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/core": "workspace:^7.10.4",
+    "@babel/helper-plugin-test-runner": "workspace:^7.10.4"
+  }
+}

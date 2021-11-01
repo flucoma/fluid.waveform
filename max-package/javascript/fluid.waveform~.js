@@ -1,12 +1,11 @@
-/* global inlets, outlets */
 
-if (!Float32Array.prototype.slice) {
-  Object.defineProperty(Float32Array.prototype, 'slice', {
-    value: function (begin, end) {
-      return new Array(Array.prototype.slice.call(this, begin, end));
-    }
-  });
-}
+// if (!Float32Array.prototype.slice) {
+//   Object.defineProperty(Float32Array.prototype, 'slice', {
+//     value: function (begin, end) {
+//       return new Array(Array.prototype.slice.call(this, begin, end));
+//     }
+//   });
+// }
 
 if (!Array.prototype.fill) {
   Object.defineProperty(Array.prototype, 'fill', {
@@ -106,7 +105,7 @@ init();
 mgraphics.redraw();
 
 function getzoom() { return zoom; }
-function setzoom(z){ redrawNeeded = true; zoom = Math.min(1,Math.max(0,z))}
+function setzoom(z) { redrawNeeded = true; zoom = Math.min(1, Math.max(0, z)) }
 
 function getoffset() { return offset; }
 function setoffset(o){ redrawNeeded = true; offset = Math.min(1,Math.max(0,o))}
@@ -170,15 +169,14 @@ function LayerData() {
   this.data = [];
   this.favlayer = []; 
   this.dirty = true; 
-  this.cache = null; 
+  this.peakcache = []; 
+  this.img = null; 
   // this.signal = []; 
 }
 LayerData.local = 1; 
 
 function find (_name) {
-  // post('in find' ,_name,'\n')
   if (!_name) return null;
-  // post(labels.indexOf(_name),'\n')
 	// this is stricter than parseInt
   return /^\d+$/.test(_name) ? parseInt(_name) : labels.indexOf(_name);
 }
@@ -198,10 +196,9 @@ function addlayer (type, source, _name) {
   } 
   else 
   {
-    var l = new LayerSpec();
+    var l = layers[index]; 
     l.type = type;
     l.source = source;    
-    layers[i] = l; 
   }
   refresh(); 
 }
@@ -236,7 +233,7 @@ function addmarkers(source, reference, _name)
     return
   }
   
-  if(!fs) throw "NOPE"
+  if(!fs) throw "Markers: could not establish sample rate"; 
   
   var l = new MarkersSpec(markerdata,fs,referenceLength)
   
@@ -274,7 +271,6 @@ function set () {
   value = value.length === 1 ? value[0] : value;
   if (typeof layers[index][property] !== 'undefined') {
     alllayers[index][property] = value;
-    // post(value)
   } else		{
     error('layer', _name, 'has no property', property, '\n');
     dumpobj(layers[index])
@@ -289,7 +285,6 @@ function color()
     const index = find(args[0])    
     if(index >= 0)
     {
-      // post(index)
       const n = Math.min(args.length,5)  
       for(var i = 1; i < n; i++)
       {
@@ -345,7 +340,8 @@ function refresh () {
   layerData = []; 
   jsuiObj = this;
 
-  layers.forEach(function (l, i) {    
+  layers.forEach(function (l, i) {  
+ 
     var buf = new Buffer(l.source);
     if (!buf) return;     
     var srcChans = buf.channelcount();
@@ -355,8 +351,11 @@ function refresh () {
     var chans = [];
 
     if (l.channels instanceof Array) 
+    {
       chans = l.channels.map(function (c) { Math.min(srcChans - 1, c); });
+    }
     else 
+    {
       if (l.channels === -1) {
         chans.length = srcChans;
         chans.fill(0);
@@ -365,31 +364,34 @@ function refresh () {
       else 
         if (typeof l.channels === 'number') 
           chans = [Math.min(srcChans - 1, l.channels)];
+    }
+        
 
-
-    data = [];
-    if(l.type !== 'image')      
+    //for images (rank 2 signals), layer.data is Signal of arrays 
+    // for everything else layers.data is array of Signals of rank-1
+    // (this is how fav thinks of things)      
+    var ld = new LayerData(); 
+    var data = [];
+    if(l.type === 'image')      
     {
       chans.forEach(function (c) {
        var s = buf.peek(c + 1, 0, buf.framecount());
        data.push(s instanceof Array ? s : [s]);
       });
+      
+      ld.data = new Signal(data, fs);   
     }
     else 
     {
-      for(var t = 0; t < buf.framecount(); t++) data.push(new Array(chans.length))
+      ld.data = []; 
+      
       chans.forEach(function (c) {
        var s = buf.peek(c + 1, 0, buf.framecount());
        s = s instanceof Array ? s : [s];
-       for(var j = 0; j < buf.framecount();j++)
-       {
-          data[j][c] = s[j]
-       } 
+       ld.data.push(new Signal(s,fs)); 
+       ld.peakcache.push(null); 
       });        
     }
-    
-    var ld = new LayerData(); 
-    
     if (disp !== null) { 
       disp.addLayer(l.type, 0);
       ld.favlayer = disp.layers[disp.layers.length - 1]; 
@@ -398,7 +400,6 @@ function refresh () {
       disp = new Display(jsuiObj, l.type, width, height);
       ld.favlayer = disp.layers[0]; 
     }    
-    ld.data = new Signal(data, fs);          
     
     layerData.push(ld);
     
@@ -413,8 +414,6 @@ function refresh () {
     
     if(layers.length > 0) l.extent = layers[0].length 
   })        
-  
-  // mgraphics.redraw();
   redrawNeeded = true; 
 }
 
@@ -454,7 +453,7 @@ function dumpobj (obj) {
 }
 
 function getContext () {
-  return mg;
+  return mg;  
 }
 getContext.local = 1; 
 
@@ -488,38 +487,75 @@ function markers () {
   addmarkers(args[0],args[1]);    
 }
 
-
 function render() 
 {
   mg = new MGraphics(width,height); 
+  with(mg){
+    init(); 
+    relative_coords = 0; 
+    autofill = 0; 
+    rectangle(0,0,width,height); 
+    set_source_rgba(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
+    fill();
+  }
   var size = this.box.rect;
   var off = Math.min(offset,1 - zoom)
-  // post(backgroundcolor,'\n')
-  // mg.set_source_rgba(backgroundcolor[0],backgroundcolor[1],backgroundcolor[2],backgroundcolor[3])
-  // mg.rectangle(0,0,width,height)
-  // mg.fill()
-  
-  layers.forEach(function (l, i) {    
-    var sig = layerData[i].data; 
+
+  layers.forEach(function (l, i) 
+  {
+    var sig =  layerData[i].data ; 
     var zsig = null; 
+    
+    const zoomSlice = function(sig){
+      return sig.slice(off * len,Math.max(1,len * (off + zoom)))
+    }
+
     if(l.type !== 'image')
     {
-      var len = sig.rank === 2  ? sig.nBands : sig.length
-      zsig = sig.slice(off * len,Math.max(1,len * (off + zoom)))
+      const channelCount = layerData[i].data.length; 
+      const vHop = (height / channelCount) | 0;  
+      
+      for(var chan = 0; chan < channelCount;  chan++)
+      {        
+        sig = layerData[i].data[chan];  
+        len = sig.length; 
+                
+        //really idiotic caching; improves matters for files up to a few minutes
+        //but better long term solution needed (implies refactor)
+        if(l.type === 'wave' && len / width > 128)
+        {
+          if(layerData[i].peakcache[chan] === null)
+          {
+            layerData[i].peakcache[chan] = [
+              sig.sample(128,'min'), sig.sample(128,'max')
+            ]  
+          }
+
+          sig = layerData[i].peakcache[chan]; 
+          len = sig[0].length;  
+          zsig = [zoomSlice(sig[0]), zoomSlice(sig[1])]
+        }
+        else
+        {
+          zsig = zoomSlice(sig); 
+        }        
+        disp.layers[i].setRange([0, chan * vHop, width,vHop]); 
+        disp.draw(zsig, l.style, disp.layers[i]);        
+      }
     }
-    else //sigh
+    else 
     {
       var len = sig.length
       zsig = new Signal(sig.data.slice(off * len,Math.max(1,len * (off + zoom))))
+      disp.draw(zsig, l.style, disp.layers[i]);        
     }
-
-    disp.draw(zsig, l.style, disp.layers[i]);
+  
   });
   
   markerlayers.forEach(function(l,i){
     if(layers.length > 0)
     { 
-      var sig =layerData[0].data; 
+      var sig =layerData[0].data[0]; 
       l.data.extent = [0, sig.rank === 2 ? sig.nBands : sig.length]; 
     }
     var sig = l.data.slice(off * l.data.length, l.data.length * (zoom + off))     
@@ -533,9 +569,11 @@ function paint () {
   var size = this.box.rect;
   var off = Math.min(offset,1 - zoom)  
   gc();   
-  mgraphics.rectangle(0,0,width,height); 
-  mgraphics.set_source_rgba(backgroundcolor[0], backgroundcolor[1], backgroundcolor[2], backgroundcolor[3]);
-  mgraphics.fill()
+  if(redrawNeeded){ 
+    render(); 
+    redrawNeeded = false; 
+  }
+
   mgraphics.image_surface_draw(img); 
 }
 
@@ -556,12 +594,13 @@ function onclick (x, y, button, mod1, shift, caps, opt, mod2) {
     var factor = (l.data.length / getWidth()) * zoom;
     var off = Math.min(offset,1 - zoom) * l.data.length;       
 
-    if(shift) l.data.add(off + (x * factor));       
-    if(opt) 
+    if(shift && !mod1) l.data.add(off + (x * factor));       
+    else if(shift && mod1) 
     {
       //someting should be selected 
       var sel = l.data.data.filter(function(m){return m.selected}); 
-      if(sel[0])l.data.remove(sel[0]); 
+      if(sel[0])
+        l.data.remove(sel[0]); 
     }  
   }
   redrawNeeded = true; 
@@ -579,7 +618,7 @@ function onresize (x, y, button, mod1, shift, caps, opt, mod2) {
   height = box.rect[3] - box.rect[1];
   disp.canvas.width = width;
   disp.canvas.height = height;
-  refresh(); 
+  redrawNeeded = true; 
 }
 
 function onidle (x, y, button, mod1, shift, caps, opt, mod2) {

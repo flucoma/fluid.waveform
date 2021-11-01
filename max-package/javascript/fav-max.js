@@ -464,7 +464,9 @@ var SubContext = /*#__PURE__*/function () {
   _createClass(SubContext, [{
     key: "_translate",
     value: function _translate(x, y) {
-      return [x + this.range[0] + this.layer.margin / 2, y + this.range[1] + this.layer.margin / 2];
+      return [x + this.range[0], // + this.layer.margin / 2) | 0,
+      y + this.range[1] // + this.layer.margin / 2)| 0
+      ];
     }
   }]);
 
@@ -474,9 +476,9 @@ var SubContext = /*#__PURE__*/function () {
     range = range ? range : [0, 0, layer.jsui.getWidth(), layer.jsui.getHeight()];
     if (!(range instanceof Array) && !range.length === 4) throw 'Invalid range';
     this.range = range;
-    this.fillStyle = [0, 0, 0, 0];
-    this.strokeStyle = [0, 0, 0, 1];
     this.layer = layer;
+    this.fillStyle = [0, 0, 0, 1];
+    this.stroke_style = [0, 0, 0, 1];
   }
 
   _createClass(SubContext, [{
@@ -524,10 +526,7 @@ var SubContext = /*#__PURE__*/function () {
   }, {
     key: "stroke",
     value: function stroke() {
-      var _this$mg6;
-
-      (_this$mg6 = this.mg).set_source_rgba.apply(_this$mg6, _toConsumableArray(this.strokeStyle));
-
+      /*this.mg.set_source_rgba(...this.strokeStyle);*/
       this.mg.stroke();
     }
   }, {
@@ -633,14 +632,26 @@ var SubContext = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "strokeStyle",
+    set: function set(s) {
+      var _this$mg6;
+
+      (_this$mg6 = this.mg).set_source_rgb.apply(_this$mg6, _toConsumableArray(s));
+
+      this.stroke_style = s;
+    },
+    get: function get() {
+      return this.stroke_style;
+    }
+  }, {
     key: "width",
     get: function get() {
-      return this.range[2] - this.layer.margin;
+      return this.range[2] - this.layer.margin | 0;
     }
   }, {
     key: "height",
     get: function get() {
-      return this.range[3] - this.layer.margin;
+      return this.range[3] - this.layer.margin | 0;
     }
   }, {
     key: "mg",
@@ -698,21 +709,35 @@ var Layer = /*#__PURE__*/function () {
   }]);
 
   function Layer(type, jsui) {
-    var margin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
+    var _this6 = this;
+
+    var margin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
     var range = arguments.length > 3 ? arguments[3] : undefined;
 
     _classCallCheck(this, Layer);
 
     var drawFuncs = {
       'line': this.drawLine,
-      'fill': this.drawFill,
-      'wave': this.drawWave,
-      'errorbar': this.drawError,
-      'image': this.drawImage,
-      'marker': this.drawMarker
+      // 'fill': this.drawFill,
+      'wave': this.drawPeaks,
+      // 'errorbar': this.drawError,
+      'image': this.drawImage // 'marker': this.drawMarker
+
+    };
+    var renderFuncs = {
+      'line': function line(ctx) {
+        ctx.stroke();
+      },
+      'wave': function wave(ctx) {
+        ctx.image_surface_draw(_this6.img);
+      },
+      'image': function image(ctx) {
+        ctx.image_surface_draw(_this6.img);
+      }
     };
     if (!range) range = null;
     this.draw = drawFuncs[type];
+    this.render = renderFuncs[type];
     this.scale = 1.0;
     this.y = 0;
     this.jsui = jsui;
@@ -730,11 +755,17 @@ var Layer = /*#__PURE__*/function () {
       }
 
     };
-    this.margin = margin ? margin : 0;
+    this.margin = 0; //margin ? margin : 0
+
     this.type = type;
   }
 
   _createClass(Layer, [{
+    key: "setRange",
+    value: function setRange(range) {
+      this.context = new SubContext(this, range);
+    }
+  }, {
     key: "_mapVal",
     value: function _mapVal(x, min, range, height) {
       return height * (x - min) / range;
@@ -746,40 +777,42 @@ var Layer = /*#__PURE__*/function () {
   }, {
     key: "drawLine",
     value: function drawLine(desc, style) {
-      var _this6 = this;
+      if (desc.length !== this.canvas.width) {
+        desc = desc.sample(desc.length / this.canvas.width);
+      }
 
-      var vstep = this.canvas.height / desc.length;
-      desc = desc.rank === 1 ? [desc] : desc.data.map(function (d) {
-        return new signal(d, desc.sampleRate, desc.type);
-      });
-      var length = desc.rank == 1 ? desc.length : desc.nBands;
-      desc.forEach(function (d, i) {
-        if (d.length !== _this6.canvas.width) {
-          d = d.sample(d.length / _this6.canvas.width);
-        }
+      desc.computeRange();
+      this.context.lineWidth(2);
+      this.context.strokeStyle = style['color'];
+      var y0 = this._mapVal(desc.data[0], desc.min, desc.range, this.canvas.height - this.margin) | 0;
+      this.context.moveTo(0, this.canvas.height - y0);
 
-        var amp = vstep * (i + 1);
-        d.computeRange();
+      for (var j = 1; j < desc.data.length; j++) {
+        var y = this._mapVal(desc.data[j], desc.min, desc.range, this.canvas.height - this.margin) | 0;
+        this.context.lineTo(j, this.canvas.height - y);
+      }
 
-        var y0 = _this6._mapVal(d.data[0], d.min, d.range, vstep - _this6.margin); // this.context.moveTo(0, this.canvas.height - y0)
+      this.context.lineTo(desc.data.length, this.canvas.height - y0);
+      this.context.stroke();
+    }
+  }, {
+    key: "drawPeaks",
+    value: function drawPeaks(desc, style) {
+      //ghastly way of seeing if we have cached peaks or not 
+      //todo: make less ghastly
+      if (!Array.isArray(desc) && desc.length !== 2) desc = [desc, desc];
+      var length = desc[0].length;
+      var amp = this.canvas.height / 2;
+      var ctx = this.context;
+      var step = length / this.canvas.width;
+      var min = desc[0].sample(step, 'min');
+      var max = desc[1].sample(step, 'max');
+      ctx.fillStyle = style.color;
 
+      for (var i = 0; i < this.canvas.width; i++) {
+        ctx.fillRect(i, (1 - max.data[i]) * amp, 1, Math.max(1, (max.data[i] - min.data[i]) * amp));
+      } // this.img = new Image(ctx.mg.pop_group()); 
 
-        _this6.context.moveTo(0, amp - y0);
-
-        for (var j = 1; j < d.data.length; j++) {
-          var y = _this6._mapVal(d.data[j], d.min, d.range, vstep - _this6.margin);
-
-          _this6.context.lineTo(j, amp - y);
-        }
-
-        _this6.context.lineTo(d.data.length, amp - y0);
-
-        _this6.context.lineWidth(2);
-
-        _this6.context.strokeStyle = style['color'];
-
-        _this6.context.stroke();
-      });
     }
   }, {
     key: "drawWave",
@@ -883,7 +916,7 @@ var Layer = /*#__PURE__*/function () {
 
 var MarkerLayer = /*#__PURE__*/function () {
   function MarkerLayer(type, jsui, refLayer) {
-    var margin = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
+    var margin = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
     var range = arguments.length > 4 ? arguments[4] : undefined;
 
     _classCallCheck(this, MarkerLayer);
@@ -939,14 +972,12 @@ var MarkerLayer = /*#__PURE__*/function () {
       var factor = extent / this.canvas.width;
       var offset = desc.extent[0];
       var pos = (x + this.margin / 2) * factor | 0;
-      post('sear\n');
 
       for (var i = 0; i < desc.data.length; i++) {
         var y = desc.data[i].position - offset;
         desc.data[i].selected = pos > y - 10 * factor && pos < y + 10 * factor;
 
         if (desc.data[i].selected) {
-          post("yaya\n");
           return desc.data[i];
         }
       }
@@ -985,6 +1016,7 @@ var Display = /*#__PURE__*/function () {
     //   this.container.removeChild(this.container.lastChild);
     // }
 
+    this.path = null;
     this.addLayer(firstLayerType, margin, range);
   }
 
@@ -1046,7 +1078,12 @@ var Display = /*#__PURE__*/function () {
   return Display;
 }();
 
-var displayJsui = Display; // import "core-js/stable";
+var displayJsui = Display;
+var peakcache = {
+  "cache": function cache(peaks) {
+    this.peakcache = peaks;
+  }
+}; // import "core-js/stable";
 // import "regenerator-runtime/runtime";
 
 for (var key in unaryops_1) {
@@ -1059,6 +1096,10 @@ for (var key in binaryops) {
 
 for (var key in samplers) {
   signal.prototype[key] = samplers[key];
+}
+
+for (var key in peakcache) {
+  signal.prototype[key] = peakcache[key];
 }
 
 var apiMax = {

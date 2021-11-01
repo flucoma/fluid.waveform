@@ -3,21 +3,25 @@ let Signal = require('./signal.js')
 // Lightest-weight wrapping around MGraphics possible, to allow for layers to draw into sub-regions of an MGrpahics using function calls that match the HTMLContext names
 class SubContext {
   _translate (x, y) {
-    return [x + this.range[0] + this.layer.margin / 2,
-      y + this.range[1] + this.layer.margin / 2]
+    return [
+      (x + this.range[0]),// + this.layer.margin / 2) | 0,
+      (y + this.range[1])// + this.layer.margin / 2)| 0
+    ] 
   };
 
   constructor (layer, range) {
     range = range ? range : [0, 0, layer.jsui.getWidth(), layer.jsui.getHeight()]
     if (!(range instanceof Array) && !range.length === 4) throw 'Invalid range'
     this.range = range    
-    this.fillStyle = [0, 0, 0, 0]
-    this.strokeStyle = [0, 0, 0, 1]
     this.layer = layer
+    this.fillStyle = [0, 0, 0, 1]
+    this.stroke_style = [0, 0, 0, 1]    
   }
 
-  get width () { return this.range[2] - this.layer.margin };
-  get height () { return this.range[3] - this.layer.margin };
+  set strokeStyle(s) { this.mg.set_source_rgb(...s); this.stroke_style = s; }
+  get strokeStyle()  {return this.stroke_style }
+  get width () { return (this.range[2] - this.layer.margin) | 0 };
+  get height () { return (this.range[3] - this.layer.margin) | 0  };
   get mg() {return this.layer.jsui.getContext()}
 
   lineTo (x, y) { this.mg.line_to(...this._translate(x, y)) }
@@ -31,7 +35,7 @@ class SubContext {
     this.mg.fill()
   }
   fill () { this.mg.set_source_rgba(...this.fillStyle); this.mg.fill() }
-  stroke () { this.mg.set_source_rgba(...this.strokeStyle); this.mg.stroke() }
+  stroke () { /*this.mg.set_source_rgba(...this.strokeStyle);*/ this.mg.stroke() }
   lineWidth (x) { this.mg.set_line_width(x) }
 
   // taken from the C74 Canvas adaptor by Silvio C. Haedrich
@@ -152,18 +156,26 @@ class Layer {
     return [r, g, b]
   }
 
-  constructor (type, jsui, margin = 10, range) {
-    let drawFuncs = {
+  constructor (type, jsui, margin = 0, range) {
+    const drawFuncs = {
       'line': this.drawLine,
-      'fill': this.drawFill,
-      'wave': this.drawWave,
-      'errorbar': this.drawError,
+      // 'fill': this.drawFill,
+      'wave': this.drawPeaks,
+      // 'errorbar': this.drawError,
       'image': this.drawImage,
-      'marker': this.drawMarker
+      // 'marker': this.drawMarker
     }
+    
+    const renderFuncs = {
+      'line': ctx => {ctx.stroke()}, 
+      'wave': ctx => {ctx.image_surface_draw(this.img)},
+      'image': ctx =>{ctx.image_surface_draw(this.img)} 
+    }
+    
     if (!range) range = null
     
     this.draw = drawFuncs[type]
+    this.render = renderFuncs[type]
     this.scale = 1.0
     this.y = 0
     this.jsui = jsui
@@ -175,10 +187,15 @@ class Layer {
       get height () { return this.layer.context.height }
     }
 
-    this.margin = margin ? margin : 0
+    this.margin = 0 //margin ? margin : 0
     this.type = type
   }
-
+  
+  setRange(range)
+  {
+    this.context = new SubContext(this,range); 
+  }
+  
   _mapVal (x, min, range, height) {
     return height * (x - min) / range
   }
@@ -187,32 +204,41 @@ class Layer {
   }
 
   drawLine (desc, style) {
-    let vstep = this.canvas.height / desc.length
-    desc = desc.rank === 1 ? [desc] : desc.data.map(d => new Signal(d,desc.sampleRate,desc.type))
-     
-    let length = desc.rank == 1 ? desc.length : desc.nBands
-    
-    desc.forEach((d,i) => {        
-      if (d.length !== this.canvas.width) {      
-        d = d.sample(d.length / this.canvas.width)     
-      }
-      let amp = (vstep * (i + 1))
-      d.computeRange(); 
-      let y0 = this._mapVal(d.data[0], d.min, d.range, vstep - this.margin)
-
-      // this.context.moveTo(0, this.canvas.height - y0)
-      this.context.moveTo(0, amp - y0)
-      for (let j = 1; j < d.data.length; j++) {
-        let y = this._mapVal(d.data[j], d.min, d.range, vstep - this.margin)
-        this.context.lineTo(j, amp - y)
-      };
-      this.context.lineTo(d.data.length, amp - y0)
-      this.context.lineWidth(2)
+      if (desc.length  !==  this.canvas.width) {      
+        desc = desc.sample(desc.length / this.canvas.width)     
+      } 
+      desc.computeRange(); 
+      this.context.lineWidth(2); 
       this.context.strokeStyle = style['color']
-      this.context.stroke()    
-    });    
+      let y0 = this._mapVal(desc.data[0], desc.min, desc.range, this.canvas.height - this.margin) | 0;
+      this.context.moveTo(0, this.canvas.height - y0)
+      for (let j = 1; j < desc.data.length; j++) {
+        let y = this._mapVal(desc.data[j], desc.min, desc.range, this.canvas.height - this.margin) |0;
+        this.context.lineTo(j, this.canvas.height - y)
+      };
+      this.context.lineTo(desc.data.length, this.canvas.height - y0)
+      this.context.stroke();      
   }
-
+  
+  drawPeaks(desc,style)
+  {
+    //ghastly way of seeing if we have cached peaks or not 
+    //todo: make less ghastly
+    if(!Array.isArray(desc) && desc.length !== 2) desc = [desc,desc]; 
+     
+    let length = desc[0].length; 
+    let amp = this.canvas.height / 2
+    let ctx = this.context
+    let step = length / this.canvas.width; 
+    let min = desc[0].sample(step,'min'); 
+    let max = desc[1].sample(step,'max'); 
+    ctx.fillStyle = style.color; 
+    for (let i = 0; i < this.canvas.width; i++) {
+      ctx.fillRect(i, (1 - max.data[i]) * amp, 1, Math.max(1, (max.data[i] - min.data[i]) * amp))
+    }
+   
+  }
+    
   drawWave (desc, style) {
     let length = desc.rank == 1 ? desc.length : desc.nBands
     let amp = this.canvas.height / 2
@@ -293,7 +319,7 @@ class Layer {
 
 
 class MarkerLayer {
-  constructor (type, jsui, refLayer, margin = 10, range) {
+  constructor (type, jsui, refLayer, margin = 0, range) {
     if (!range) range = null
     this.scale = 1.0
     this.y = 0
@@ -371,6 +397,7 @@ class Display {
     // while (this.container.hasChildNodes()) {
     //   this.container.removeChild(this.container.lastChild);
     // }
+    this.path = null; 
     this.addLayer(firstLayerType, margin, range)
   }
 

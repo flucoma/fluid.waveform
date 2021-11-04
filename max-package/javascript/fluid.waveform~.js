@@ -120,6 +120,7 @@ function init () {
   layerData = []; 
   labels = [];
   markerlayers = []; 
+  alllayers = []; 
   redrawNeeded = true; 
   img = null; 
   refresh(); 
@@ -253,6 +254,10 @@ function removelayer (_name) {
   layers = alllayers.filter(function(l){return l instanceof LayerSpec}); 
   markerlayers = alllayers.filter(function(l){return l instanceof MarkersSpec}); 
   refresh(); 
+}
+
+function clear() {
+  init();   
 }
 
 function getlayers () {

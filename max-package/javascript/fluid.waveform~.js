@@ -245,7 +245,6 @@ function addmarkers(source, reference, _name)
 }
 
 function removelayer (_name) {
-  labels.findIndex(function(n){n===_name});  
   if (!_name) return;
   var index = find(_name);
   if (index < 0) return;
@@ -253,6 +252,7 @@ function removelayer (_name) {
   labels.splice(index, 1);
   layers = alllayers.filter(function(l){return l instanceof LayerSpec}); 
   markerlayers = alllayers.filter(function(l){return l instanceof MarkersSpec}); 
+  refresh(); 
 }
 
 function getlayers () {

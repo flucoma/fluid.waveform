@@ -18,7 +18,7 @@ class SubContext {
     this.stroke_style = [0, 0, 0, 1]    
   }
 
-  set strokeStyle(s) { this.mg.set_source_rgb(...s); this.stroke_style = s; }
+  set strokeStyle(s) { this.mg.set_source_rgba(...s); this.stroke_style = s; }
   get strokeStyle()  {return this.stroke_style }
   get width () { return (this.range[2] - this.layer.margin) | 0 };
   get height () { return (this.range[3] - this.layer.margin) | 0  };

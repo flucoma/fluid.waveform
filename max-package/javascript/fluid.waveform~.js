@@ -560,7 +560,9 @@ function render()
       var sig =layerData[0].data[0]; 
       l.data.extent = [0, sig.rank === 2 ? sig.nBands : sig.length]; 
     }
-    var sig = l.data.slice(off * l.data.length, l.data.length * (zoom + off))     
+    else l.data.extent = [0,l.data[l.data.length - 1]]; 
+    var sig = l.data.slice(off * l.data.length, l.data.length * (zoom + off))    
+    disp.layers[i + layers.length].setRange([0, 0, width,height]);  
     disp.draw(sig,l.style,disp.layers[i + layers.length])
   })
   img = new Image(mg); 

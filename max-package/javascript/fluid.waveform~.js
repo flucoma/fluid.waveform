@@ -484,11 +484,7 @@ function getHeight () {
 getHeight.local = 1; 
 
 function buffer (b) {
-  // Check if the buffer is a valid buffer
-  var bufferValid = new Buffer(b); 
-  if (bufferValid.framecount() != -1) {
-    addlayer('wave', b);
-  };
+  addlayer('wave',b);    
 }
 
 function markers () {
@@ -625,14 +621,12 @@ function ondrag (x, y, button, mod1, shift, caps, opt, mod2) {
 function onresize (x, y, button, mod1, shift, caps, opt, mod2) {
   width = box.rect[2] - box.rect[0];
   height = box.rect[3] - box.rect[1];
-  
-  render();
 
   if (disp) {
     disp.canvas.width = width;
-    disp.canvas.height = height;
-    redrawNeeded = true;
+    disp.canvas.height = height;     
   }
+  redrawNeeded = true;
 }
 
 function onidle (x, y, button, mod1, shift, caps, opt, mod2) {

@@ -3,7 +3,7 @@ name: Main Release
 on:
   push:
     branches:
-      - main
+      - [main, enhance/continuous-integration]
 
 jobs:
   build:

@@ -2,8 +2,7 @@ name: Main Release
 
 on:
   push:
-    branches:
-      - [main, enhance/continuous-integration]
+    branches: [main, enhance/continuous-integration]
 
 jobs:
   build:

@@ -623,9 +623,9 @@ function onresize (x, y, button, mod1, shift, caps, opt, mod2) {
 
   if (disp) {
     disp.canvas.width = width;
-    disp.canvas.height = height;
-    redrawNeeded = true; 
+    disp.canvas.height = height;     
   }
+  redrawNeeded = true;
 }
 
 function onidle (x, y, button, mod1, shift, caps, opt, mod2) {

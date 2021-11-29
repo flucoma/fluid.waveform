@@ -625,11 +625,13 @@ function ondrag (x, y, button, mod1, shift, caps, opt, mod2) {
 function onresize (x, y, button, mod1, shift, caps, opt, mod2) {
   width = box.rect[2] - box.rect[0];
   height = box.rect[3] - box.rect[1];
+  
+  render();
 
   if (disp) {
     disp.canvas.width = width;
     disp.canvas.height = height;
-    redrawNeeded = true; 
+    redrawNeeded = true;
   }
 }
 

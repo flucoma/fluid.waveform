@@ -6,7 +6,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -100,16 +100,6 @@ var Signal = /*#__PURE__*/function () {
       return this;
     }
   }, {
-    key: "length",
-    get: function get() {
-      return this.data.length;
-    }
-  }, {
-    key: "nBands",
-    get: function get() {
-      if (this.rank == 1) return 1;else if (this.rank == 2) return this.data[0].length;else throw "Invalid signal dimensions";
-    }
-  }, {
     key: "clone",
     value: function clone() {
       return new Signal(this.data.slice(), this.sampleRate, this.type, this.min, this.max);
@@ -139,6 +129,16 @@ var Signal = /*#__PURE__*/function () {
       var samplingMethod = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "mean";
       target.display.draw(this, style, target, samplingMethod);
       return this;
+    }
+  }, {
+    key: "length",
+    get: function get() {
+      return this.data.length;
+    }
+  }, {
+    key: "nBands",
+    get: function get() {
+      if (this.rank == 1) return 1;else if (this.rank == 2) return this.data[0].length;else throw "Invalid signal dimensions";
     }
   }]);
 
@@ -176,16 +176,6 @@ var Markers = /*#__PURE__*/function () {
   }
 
   _createClass(Markers, [{
-    key: "length",
-    get: function get() {
-      return this.extent[1] ? this.extent[1] : this.data[this.data.length - 1].position;
-    }
-  }, {
-    key: "size",
-    get: function get() {
-      return this.data.length;
-    }
-  }, {
     key: "draw",
     value: function draw(target, style) {
       target.display.draw_markers(this, style, target, "max");
@@ -217,6 +207,16 @@ var Markers = /*#__PURE__*/function () {
       });
       newm.extent = [from, this.extent[1] ? to - from : null];
       return newm;
+    }
+  }, {
+    key: "length",
+    get: function get() {
+      return this.extent[1] ? this.extent[1] : this.data[this.data.length - 1].position;
+    }
+  }, {
+    key: "size",
+    get: function get() {
+      return this.data.length;
     }
   }]);
 
@@ -358,7 +358,7 @@ var unaryops = {
     return newDesc;
   },
   'schmitt': function schmitt(th0, th1) {
-    this.clone();
+    var result = this.clone();
     var state = 0;
 
     for (var i = 0; i < this.length; i++) {
@@ -442,7 +442,7 @@ var samplers = {
     var newSize = Math.ceil(this.data.length / step);
     var newData = new Array(newSize);
     var newRate = this.sampleRate / step;
-    this.data.length / step;
+    var ratio = this.data.length / step;
 
     for (var i = 0; i < newSize; i += 1) {
       var bucketStart = Math.floor(i * step);
@@ -461,6 +461,15 @@ var samplers = {
 }; // Lightest-weight wrapping around MGraphics possible, to allow for layers to draw into sub-regions of an MGrpahics using function calls that match the HTMLContext names
 
 var SubContext = /*#__PURE__*/function () {
+  _createClass(SubContext, [{
+    key: "_translate",
+    value: function _translate(x, y) {
+      return [x + this.range[0], // + this.layer.margin / 2) | 0,
+      y + this.range[1] // + this.layer.margin / 2)| 0
+      ];
+    }
+  }]);
+
   function SubContext(layer, range) {
     _classCallCheck(this, SubContext);
 
@@ -473,66 +482,32 @@ var SubContext = /*#__PURE__*/function () {
   }
 
   _createClass(SubContext, [{
-    key: "_translate",
-    value: function _translate(x, y) {
-      return [x + this.range[0], // + this.layer.margin / 2) | 0,
-      y + this.range[1] // + this.layer.margin / 2)| 0
-      ];
-    }
-  }, {
-    key: "strokeStyle",
-    get: function get() {
-      return this.stroke_style;
-    },
-    set: function set(s) {
-      var _this$mg;
-
-      (_this$mg = this.mg).set_source_rgb.apply(_this$mg, _toConsumableArray(s));
-
-      this.stroke_style = s;
-    }
-  }, {
-    key: "width",
-    get: function get() {
-      return this.range[2] - this.layer.margin | 0;
-    }
-  }, {
-    key: "height",
-    get: function get() {
-      return this.range[3] - this.layer.margin | 0;
-    }
-  }, {
-    key: "mg",
-    get: function get() {
-      return this.layer.jsui.getContext();
-    }
-  }, {
     key: "lineTo",
     value: function lineTo(x, y) {
-      var _this$mg2;
+      var _this$mg;
 
-      (_this$mg2 = this.mg).line_to.apply(_this$mg2, _toConsumableArray(this._translate(x, y)));
+      (_this$mg = this.mg).line_to.apply(_this$mg, _toConsumableArray(this._translate(x, y)));
     }
   }, {
     key: "moveTo",
     value: function moveTo(x, y) {
-      var _this$mg3;
+      var _this$mg2;
 
-      (_this$mg3 = this.mg).move_to.apply(_this$mg3, _toConsumableArray(this._translate(x, y)));
+      (_this$mg2 = this.mg).move_to.apply(_this$mg2, _toConsumableArray(this._translate(x, y)));
     }
   }, {
     key: "rect",
     value: function rect(x, y, w, h) {
-      var _this$mg4;
+      var _this$mg3;
 
-      (_this$mg4 = this.mg).rectangle.apply(_this$mg4, _toConsumableArray(this._translate(x, y)).concat([w, h]));
+      (_this$mg3 = this.mg).rectangle.apply(_this$mg3, _toConsumableArray(this._translate(x, y)).concat([w, h]));
     }
   }, {
     key: "fillRect",
     value: function fillRect(x, y, w, h) {
-      var _this$mg5;
+      var _this$mg4;
 
-      (_this$mg5 = this.mg).set_source_rgba.apply(_this$mg5, _toConsumableArray(this.fillStyle)); // this.mg.set_source_rgba(0, 0, 0, 1)
+      (_this$mg4 = this.mg).set_source_rgba.apply(_this$mg4, _toConsumableArray(this.fillStyle)); // this.mg.set_source_rgba(0, 0, 0, 1)
       // this.mg.rectangle(x + this.range[0], y + this.range[1], w, h)
 
 
@@ -542,9 +517,9 @@ var SubContext = /*#__PURE__*/function () {
   }, {
     key: "fill",
     value: function fill() {
-      var _this$mg6;
+      var _this$mg5;
 
-      (_this$mg6 = this.mg).set_source_rgba.apply(_this$mg6, _toConsumableArray(this.fillStyle));
+      (_this$mg5 = this.mg).set_source_rgba.apply(_this$mg5, _toConsumableArray(this.fillStyle));
 
       this.mg.fill();
     }
@@ -656,12 +631,83 @@ var SubContext = /*#__PURE__*/function () {
         this.mg.restore();
       }
     }
+  }, {
+    key: "strokeStyle",
+    set: function set(s) {
+      var _this$mg6;
+
+      (_this$mg6 = this.mg).set_source_rgba.apply(_this$mg6, _toConsumableArray(s));
+
+      this.stroke_style = s;
+    },
+    get: function get() {
+      return this.stroke_style;
+    }
+  }, {
+    key: "width",
+    get: function get() {
+      return this.range[2] - this.layer.margin | 0;
+    }
+  }, {
+    key: "height",
+    get: function get() {
+      return this.range[3] - this.layer.margin | 0;
+    }
+  }, {
+    key: "mg",
+    get: function get() {
+      return this.layer.jsui.getContext();
+    }
   }]);
 
   return SubContext;
 }();
 
 var Layer = /*#__PURE__*/function () {
+  _createClass(Layer, [{
+    key: "hslToRgb",
+    // http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+    value: function hslToRgb(h, s, l) {
+      var r, g, b;
+
+      if (s == 0) {
+        r = g = b = l; // achromatic
+      } else {
+        var hue2rgb = function hue2rgb(p, q, t) {
+          if (t < 0) {
+            t += 1;
+          }
+
+          if (t > 1) {
+            t -= 1;
+          }
+
+          if (t < 1 / 6) {
+            return p + (q - p) * 6 * t;
+          }
+
+          if (t < 1 / 2) {
+            return q;
+          }
+
+          if (t < 2 / 3) {
+            return p + (q - p) * (2 / 3 - t) * 6;
+          }
+
+          return p;
+        };
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+      }
+
+      return [r, g, b];
+    }
+  }]);
+
   function Layer(type, jsui) {
     var _this6 = this;
 
@@ -715,48 +761,6 @@ var Layer = /*#__PURE__*/function () {
   }
 
   _createClass(Layer, [{
-    key: "hslToRgb",
-    value: // http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
-    function hslToRgb(h, s, l) {
-      var r, g, b;
-
-      if (s == 0) {
-        r = g = b = l; // achromatic
-      } else {
-        var hue2rgb = function hue2rgb(p, q, t) {
-          if (t < 0) {
-            t += 1;
-          }
-
-          if (t > 1) {
-            t -= 1;
-          }
-
-          if (t < 1 / 6) {
-            return p + (q - p) * 6 * t;
-          }
-
-          if (t < 1 / 2) {
-            return q;
-          }
-
-          if (t < 2 / 3) {
-            return p + (q - p) * (2 / 3 - t) * 6;
-          }
-
-          return p;
-        };
-
-        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        var p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
-      }
-
-      return [r, g, b];
-    }
-  }, {
     key: "setRange",
     value: function setRange(range) {
       this.context = new SubContext(this, range);
@@ -812,22 +816,24 @@ var Layer = /*#__PURE__*/function () {
   }, {
     key: "drawWave",
     value: function drawWave(desc, style) {
-      desc.rank == 1 ? desc.length : desc.nBands;
-      this.canvas.height / 2;
+      var length = desc.rank == 1 ? desc.length : desc.nBands;
+      var amp = this.canvas.height / 2;
       var ctx = this.context;
       ctx.fillStyle = style.color;
 
       if (desc.rank === 1) {
         var step = desc.length / this.canvas.width;
-        var amp = this.canvas.height / 2;
+
+        var _amp = this.canvas.height / 2;
+
         var min = desc.sample(step, 'min');
         var max = desc.sample(step, 'max');
 
         for (var i = 0; i < this.canvas.width; i++) {
-          ctx.fillRect(i, (1 - max.data[i]) * amp, 1, Math.max(1, (max.data[i] - min.data[i]) * amp));
+          ctx.fillRect(i, (1 - max.data[i]) * _amp, 1, Math.max(1, (max.data[i] - min.data[i]) * _amp));
         }
       } else {
-        var _amp = this.canvas.height / (2 * desc.length);
+        var _amp2 = this.canvas.height / (2 * desc.length);
 
         var vstep = this.canvas.height / desc.length;
 
@@ -839,7 +845,7 @@ var Layer = /*#__PURE__*/function () {
           var _max = thisDesc.abs().sample(_step, 'max');
 
           for (var j = 0; j < this.canvas.width; j++) {
-            ctx.fillRect(j, (1 - _max.data[j]) * _amp + vstep * _i, 1, Math.max(1, _max.data[j] * vstep));
+            ctx.fillRect(j, (1 - _max.data[j]) * _amp2 + vstep * _i, 1, Math.max(1, _max.data[j] * vstep));
           }
         }
       }
@@ -891,7 +897,7 @@ var Layer = /*#__PURE__*/function () {
       var imageData = new Image(desc.length, desc.nBands);
 
       for (var i = 0; i < desc.nBands; i++) {
-        desc.nBands - i;
+        var row = desc.nBands - i;
 
         for (var j = 0; j < desc.length; j++) {
           var val = desc.data[j][i];
@@ -937,6 +943,11 @@ var MarkerLayer = /*#__PURE__*/function () {
   }
 
   _createClass(MarkerLayer, [{
+    key: "setRange",
+    value: function setRange(range) {
+      this.context = new SubContext(this, range);
+    }
+  }, {
     key: "draw",
     value: function draw(desc, style) {
       var extent = desc.length;

@@ -21,17 +21,17 @@ jobs:
       - name: Build and Bundle
         run: npm run build && npm run bundle
 
-      - name: ls
-        run: ls
+      - name: Create tar.gz
+        run: tar -zcvf fluid.waveform.tar.gz max-package/
       
-      # - name: package and upload
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     release_name: fluid.waveform~
-      #     body: "This is a nightly build of the FluCoMa Max package. As such, be warned there may be bugs or other unexpected behaviour. The build hash is ${{ github.sha }}"
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: FluCoMa-Max-nightly.zip
-      #     asset_name: FluCoMa-Max-nightly.zip
-      #     tag: ${{ github.ref }}
-      #     overwrite: true
+      - name: package and upload
+        uses: svenstaro/upload-release-action@v2
+        with:
+          release_name: fluid.waveform~
+          body: "This is the latest release of the fluid.waveform~ js code. It is intended to be used in the FluCoMa Max Package."
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: fluid.waveform.tar.gz
+          asset_name: fluid.waveform.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
         

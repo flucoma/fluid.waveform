@@ -484,7 +484,11 @@ function getHeight () {
 getHeight.local = 1; 
 
 function buffer (b) {
-  addlayer('wave',b);    
+  // Check if the buffer is a valid buffer
+  var bufferValid = new Buffer(b); 
+  if (bufferValid.framecount() != -1) {
+    addlayer('wave', b);
+  };
 }
 
 function markers () {

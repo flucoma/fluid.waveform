@@ -17,7 +17,8 @@ export default {
   plugins: [resolve(), 
             commonjs(),
             replace({
-              'Float32Array':'Array'
+              preventAssignment:true, 
+              'Float32Array':'Array'        
             }), 
             getBabelOutputPlugin({
               presets: ['@babel/preset-env']

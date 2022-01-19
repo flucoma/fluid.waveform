@@ -302,14 +302,18 @@ class Layer {
       throw 'Trying to draw 1D signal as image'
     }
     desc = desc.offset(1e-6).log().normalize();     
-    let imageData = new Image(desc.length, desc.nBands)
-
-    for (let i = 0; i < desc.nBands; i++) {
-      let row = desc.nBands - i
-      for (let j = 0; j < desc.length; j++) {
-        let val = desc.data[j][i]
+    
+    //orientation is actually flipped wrt to what Fav.js assumes
+    let len = desc.nBands; 
+    let bands = desc.length; 
+    
+    let imageData = new Image(len, bands)
+    
+    for (let i = 0; i < bands; i++) {
+      for (let j = 0; j < len; j++) {
+        let val = desc.data[i][j]
         let rgb = this.hslToRgb(val, 0, val)
-        imageData.setpixel(j, desc.nBands - i, rgb[0], rgb[1], rgb[2], 1)
+        imageData.setpixel(j, bands - i, rgb[0], rgb[1], rgb[2], 1)
       }
     }
 

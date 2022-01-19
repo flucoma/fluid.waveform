@@ -1,11 +1,8 @@
-// import "core-js/stable";
-// import "regenerator-runtime/runtime";
-
-let Signal = require("./signal.js");
+let Signal = require("@flucoma/fav/src/signal.js");
 let Markers = require("./marker.js")
-let unaryops = require("./unaryops.js");
-let binaryops = require("./binaryops.js");
-let samplers = require("./samplers.js");
+let unaryops = require("@flucoma/fav/src/unaryops.js");
+let binaryops = require("@flucoma/fav/src/binaryops.js");
+let samplers = require("@flucoma/fav/src/samplers.js");
 let Display = require("./display-jsui.js")
 
 for (var key in unaryops) {

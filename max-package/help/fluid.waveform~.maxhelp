@@ -3,21 +3,21 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 1,
-			"revision" : 11,
+			"minor" : 2,
+			"revision" : 0,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 79.0, 1394.0, 956.0 ],
+		"rect" : [ 35.0, 88.0, 1370.0, 777.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
 		"default_fontface" : 0,
 		"default_fontname" : "Arial",
 		"gridonopen" : 1,
-		"gridsize" : [ 15.0, 15.0 ],
+		"gridsize" : [ 10.0, 10.0 ],
 		"gridsnaponopen" : 1,
 		"objectsnaponopen" : 1,
 		"statusbarvisible" : 2,
@@ -50,21 +50,21 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 26.0, 1394.0, 930.0 ],
+						"rect" : [ 0.0, 26.0, 1370.0, 751.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
 						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
+						"gridsize" : [ 10.0, 10.0 ],
 						"gridsnaponopen" : 1,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
@@ -152,8 +152,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -166,7 +166,7 @@
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
 						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
+						"gridsize" : [ 10.0, 10.0 ],
 						"gridsnaponopen" : 1,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
@@ -242,8 +242,8 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -256,7 +256,7 @@
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
 						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
+						"gridsize" : [ 10.0, 10.0 ],
 						"gridsnaponopen" : 1,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
@@ -332,22 +332,22 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 105.0, 1394.0, 930.0 ],
+						"rect" : [ 0.0, 26.0, 1370.0, 751.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
-						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
+						"gridonopen" : 2,
+						"gridsize" : [ 10.0, 10.0 ],
+						"gridsnaponopen" : 2,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
 						"toolbarvisible" : 1,
@@ -563,7 +563,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 35.0, 520.518521547317505, 1256.944449543952942, 384.067990250435855 ],
+									"patching_rect" : [ 35.0, 452.518521547317505, 507.944449543952942, 132.067990250435855 ],
 									"presentation" : 1,
 									"presentation_rect" : [ 634.573396921157837, 195.243875801563263, 500.59646075963974, 346.481478452682495 ]
 								}
@@ -812,22 +812,22 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 26.0, 1394.0, 930.0 ],
+						"rect" : [ 0.0, 26.0, 1370.0, 751.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
-						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
-						"gridsnaponopen" : 1,
+						"gridonopen" : 2,
+						"gridsize" : [ 10.0, 10.0 ],
+						"gridsnaponopen" : 2,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
 						"toolbarvisible" : 1,
@@ -867,7 +867,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 79.5, 478.0, 330.0, 60.0 ],
+									"patching_rect" : [ 532.5, 478.0, 330.0, 60.0 ],
 									"text" : "When patcher locked: \nHover over a marker to select, click and drag to move. \nshift+click to add \nopt-click to remove"
 								}
 
@@ -1004,7 +1004,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 59.0, 555.410335123538971, 1055.944449543952942, 291.176176674214389 ],
+									"patching_rect" : [ 17.0, 445.410335123538971, 507.944449543952942, 132.067990250435855 ],
 									"presentation" : 1,
 									"presentation_rect" : [ 634.573396921157837, 195.243875801563263, 500.59646075963974, 346.481478452682495 ]
 								}
@@ -1128,6 +1128,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-39", 0 ],
+									"midpoints" : [ 68.5, 432.0, 26.5, 432.0 ],
 									"source" : [ "obj-5", 0 ]
 								}
 
@@ -1135,7 +1136,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-39", 0 ],
-									"midpoints" : [ 666.444449543952942, 424.759260773658752, 68.5, 424.759260773658752 ],
+									"midpoints" : [ 666.444449543952942, 432.0, 26.5, 432.0 ],
 									"source" : [ "obj-62", 0 ]
 								}
 
@@ -1143,7 +1144,7 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-39", 0 ],
-									"midpoints" : [ 26.5, 455.205167561769485, 68.5, 455.205167561769485 ],
+									"midpoints" : [ 26.5, 147.0, 26.5, 147.0 ],
 									"source" : [ "obj-9", 0 ]
 								}
 
@@ -1190,22 +1191,22 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 26.0, 1394.0, 930.0 ],
+						"rect" : [ 35.0, 114.0, 1370.0, 751.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 13.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
-						"gridonopen" : 1,
-						"gridsize" : [ 5.0, 5.0 ],
-						"gridsnaponopen" : 1,
+						"gridonopen" : 2,
+						"gridsize" : [ 10.0, 10.0 ],
+						"gridsnaponopen" : 2,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
 						"toolbarvisible" : 1,
@@ -1232,7 +1233,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 15.463916659355164, 876.288610696792603, 513.0, 21.0 ],
+									"patching_rect" : [ 15.463916659355164, 589.288610696792603, 513.0, 21.0 ],
 									"text" : "'dump' writes the current state to a dic, but loading is still TODO, so not useful yet"
 								}
 
@@ -1295,7 +1296,7 @@
 									"numinlets" : 2,
 									"numoutlets" : 4,
 									"outlettype" : [ "dictionary", "", "", "" ],
-									"patching_rect" : [ 15.249425232410431, 843.701033353805542, 50.5, 23.0 ],
+									"patching_rect" : [ 15.249425232410431, 556.701033353805542, 50.5, 23.0 ],
 									"saved_object_attributes" : 									{
 										"embed" : 0,
 										"parameter_enable" : 0,
@@ -1455,7 +1456,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 15.249425232410431, 428.972132682800293, 1315.944449543952942, 398.067990250435855 ],
+									"patching_rect" : [ 15.249425232410431, 416.972132682800293, 507.944449543952942, 132.067990250435855 ],
 									"presentation" : 1,
 									"presentation_rect" : [ 619.573396921157837, 180.243875801563263, 500.59646075963974, 346.481478452682495 ]
 								}
@@ -1654,21 +1655,21 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 1,
-							"revision" : 11,
+							"minor" : 2,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 26.0, 1394.0, 930.0 ],
+						"rect" : [ 0.0, 26.0, 1370.0, 751.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
 						"default_fontface" : 0,
 						"default_fontname" : "Arial",
 						"gridonopen" : 1,
-						"gridsize" : [ 15.0, 15.0 ],
+						"gridsize" : [ 10.0, 10.0 ],
 						"gridsnaponopen" : 1,
 						"objectsnaponopen" : 1,
 						"statusbarvisible" : 2,
@@ -1723,7 +1724,7 @@
 			}
 , 			{
 				"name" : "fluid.waveform~.js",
-				"bootpath" : "~/Documents/Max 8/Packages/fav4max/javascript",
+				"bootpath" : "~/dev/flucoma/waveform/max-package/javascript",
 				"patcherrelativepath" : "../javascript",
 				"type" : "TEXT",
 				"implicit" : 1

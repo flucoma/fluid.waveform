@@ -1,4 +1,4 @@
-let Signal = require('./signal.js')
+let Signal = require('@flucoma/fav/src/signal.js')
 
 // Lightest-weight wrapping around MGraphics possible, to allow for layers to draw into sub-regions of an MGrpahics using function calls that match the HTMLContext names
 class SubContext {

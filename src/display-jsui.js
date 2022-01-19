@@ -339,6 +339,12 @@ class MarkerLayer {
     this.margin = margin ? margin : 0
   }
   
+  setRange(range)
+  {
+    this.context = new SubContext(this,range); 
+  }
+
+
   draw (desc, style) {
     let extent = desc.length
     let factor = extent / this.canvas.width

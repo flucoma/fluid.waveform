@@ -944,6 +944,11 @@ var MarkerLayer = /*#__PURE__*/function () {
   }
 
   _createClass(MarkerLayer, [{
+    key: "setRange",
+    value: function setRange(range) {
+      this.context = new SubContext(this, range);
+    }
+  }, {
     key: "draw",
     value: function draw(desc, style) {
       var extent = desc.length;

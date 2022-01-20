@@ -23,6 +23,13 @@ jobs:
 
       - name: Create tar.gz
         run: tar -zcvf fluid.waveform.tar.gz max-package/
+
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: package and upload
         uses: svenstaro/upload-release-action@v2
@@ -32,6 +39,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: fluid.waveform.tar.gz
           asset_name: fluid.waveform.tar.gz
-          tag: ${{ github.ref }}
+          tag: build
           overwrite: true
         

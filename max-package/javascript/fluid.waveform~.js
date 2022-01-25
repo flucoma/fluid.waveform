@@ -203,10 +203,22 @@ find.local = 1;
 function addlayer (type, source, _name) {
   if (!type || !source) error('layer must have a type (symbol) and a source (buffer name)\n');
   const index = find(_name ? _name : source); 
+
+  var layerTypes = {
+    'imagebuf' : 'image',
+    'featurebuf' : 'line',
+    'audiobuf' : 'wave',
+    'line' : 'line',
+    'image' : 'image',
+    'wave' : 'wave'
+  }
+
+  var translatedType = layerTypes[type]
+
   if(index < 0)
   {
     var l = new LayerSpec();
-    l.type = type;
+    l.type = translatedType;
     l.source = source;
     layers.push(l);
     alllayers.push(l);   
@@ -215,7 +227,7 @@ function addlayer (type, source, _name) {
   else 
   {
     var l = alllayers[index]; 
-    l.type = type;
+    l.type = translatedType;
     l.source = source;    
   }
   refresh(); 

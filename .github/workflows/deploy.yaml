@@ -1,6 +1,7 @@
 name: Release latest build
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, enhance/continuous-integration]
 

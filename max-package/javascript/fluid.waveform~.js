@@ -205,9 +205,9 @@ function addlayer (type, source, _name) {
   const index = find(_name ? _name : source); 
 
   var layerTypes = {
-    'imagebuf' : 'image',
-    'featurebuf' : 'line',
-    'audiobuf' : 'wave',
+    'imagebuffer' : 'image',
+    'featuresbuffer' : 'line',
+    'audiobuffer' : 'wave',
     'line' : 'line',
     'image' : 'image',
     'wave' : 'wave'
@@ -231,6 +231,10 @@ function addlayer (type, source, _name) {
     l.source = source;    
   }
   refresh(); 
+}
+
+function indicesbuffer(source, reference, _name) {
+  addmarkers(source, reference, _name);
 }
 
 function addmarkers(source, reference, _name)

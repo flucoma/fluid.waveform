@@ -428,7 +428,7 @@ function refresh () {
     l.refresh(); 
     var ld = new LayerData() 
     if (!disp) 
-      disp = new Display(jsuiObj, 'markers', width, height, 0, null);
+      disp = new Display(jsuiObj, 'marker', width, height, 0, null);
     else  
       disp.addLayer('marker',0);
   })        

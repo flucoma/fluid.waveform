@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@flucoma/fav": "^0.0.1"
   },
   "devDependencies": {
-    "fav.js": "github:flucoma/fav.js",
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
@@ -14,6 +14,7 @@
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-replace": "^3.0.1",
     "core-js": "^3.6.5",
     "regenerator-runtime": "^0.13.7",
     "rollup": "^2.27.1"
@@ -37,7 +38,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel node_modules/fav.js/src -d build",
+    "build": "babel node_modules/@flucoma/fav/src -d build",
     "watch": "rollup --config --watch",
     "bundle": "rollup --config"
   },

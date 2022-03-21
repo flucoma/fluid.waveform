@@ -1,5 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
+
 import { getBabelOutputPlugin }  from '@rollup/plugin-babel';
 
 export default {
@@ -14,6 +16,10 @@ export default {
   },
   plugins: [resolve(), 
             commonjs(),
+            replace({
+              preventAssignment:true, 
+              'Float32Array':'Array'        
+            }), 
             getBabelOutputPlugin({
               presets: ['@babel/preset-env']
             })]

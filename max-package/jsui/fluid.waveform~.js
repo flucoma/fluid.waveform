@@ -336,7 +336,6 @@ function addmarkers(source, reference) {
 function removelayer(name) {
     if (!name) return;
     var index = find(name);
-    post(index)
     if (index < 0) return;
     alllayers.splice(index, 1);
     labels.splice(index, 1);
@@ -397,7 +396,6 @@ function selcolor()
         const index = find(args[0])    
         if(index >= 0)
         {
-            // post(index)
             const n = Math.min(args.length,5)  
             for(var i = 1; i < n; i++)
             {
@@ -459,7 +457,6 @@ function refresh () {
             if (typeof l.channels === 'number') 
             chans = [Math.min(srcChans - 1, l.channels)];
         }
-        
         
         //for images (rank 2 signals), layer.data is Signal of arrays 
         // for everything else layers.data is array of Signals of rank-1

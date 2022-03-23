@@ -295,11 +295,11 @@ function addlayer(type, source, r, g, b, a) {
     refresh(); 
 }
 
-function indicesbuffer(source, reference, _name) {
-    addmarkers(source, reference, _name);
+function indicesbuffer(source, reference) {
+    addmarkers(source, reference);
 }
 
-function addmarkers(source, reference, _name) {
+function addmarkers(source, reference) {
     if (!source) {
         error('marker layer must have a source (buffer)\n');
         return
@@ -309,24 +309,20 @@ function addmarkers(source, reference, _name) {
         error('source buffer does not exist');
         return
     }
+
     if (!reference) {
         post('WARNING: fluid.waveform~ is using a default sampling rate of 44.1kHz for ' + source + '\n');
         reference = 44100;
     }
-    
-    if (!bufexists(source)) {
-        error('buffer does not exist')
-        return
-    }
 
-    const index = find(_name ? _name : source); 
+    const index = find(source); 
     if(index < 0)
     {  
-        var l = new MarkersSpec(source, reference)//markerdata,fs,referenceLength)  
+        var l = new MarkersSpec(source, reference) //markerdata,fs,referenceLength)  
         l.type = 'markers';
         markerlayers.push(l);
         alllayers.push(l); 
-        labels.push(_name ? _name : source);
+        labels.push(source);
     }
     else 
     {

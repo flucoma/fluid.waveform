@@ -244,17 +244,17 @@ function addlayer (type, source, _name) {
     
     var translatedType = layerTypes[type]
     
-    if(index < 0)
-    {
+    // discern if a new or existing layer
+    if (index < 0) { // new
         var l = new LayerSpec();
         l.type = translatedType;
         l.source = source;
+        l.style.color
+        // alllayers[index]['style']['color'][i - 1] = args[i] 
         layers.push(l);
-        alllayers.push(l);   
-        labels.push(_name ? _name : source);  
-    } 
-    else 
-    {
+        alllayers.push(l);  
+        labels.push( source);  
+    } else { // existing
         var l = alllayers[index]; 
         l.type = translatedType;
         l.source = source;    

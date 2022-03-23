@@ -300,9 +300,10 @@ function addmarkers(source, reference, _name) {
     refresh(); 
 }
 
-function removelayer (_name) {
-    if (!_name) return;
-    var index = find(_name);
+function removelayer(name) {
+    if (!name) return;
+    var index = find(name);
+    post(index)
     if (index < 0) return;
     alllayers.splice(index, 1);
     labels.splice(index, 1);

@@ -266,6 +266,7 @@ function addlayer(type, source, r, g, b, a) {
 
     // if there are colours
     var choice = [1, 1, 1, 1];
+    
     if (r && (!g && !b && !a)) {
         // use prefab colours
         const map = {
@@ -281,9 +282,8 @@ function addlayer(type, source, r, g, b, a) {
             white : [1, 1, 1, 1.0]
         }
         choice = map[r] || map.white;
-    } else {
-        // use rgba
-        choice = [r, g, b, a];
+    } else if (r >= 0 && g >= 0 && b >= 0 && a >= 0) {
+        choice = [r,g,b,a];
     }
 
     // code crime but we can make it better later.
@@ -294,6 +294,8 @@ function addlayer(type, source, r, g, b, a) {
     })
     refresh(); 
 }
+
+
 
 function indicesbuffer(source, reference) {
     addmarkers(source, reference);

@@ -259,6 +259,35 @@ function addlayer (type, source, _name) {
         l.type = translatedType;
         l.source = source;    
     }
+
+    // if there are colours
+    var choice = [1, 1, 1, 1];
+    if (r && (!g && !b && !a)) {
+        // use prefab colours
+        const map = {
+            red : [1, 0, 0, 1.0],
+            green : [0, 1, 0, 1.0],
+            blue : [0, 0, 1, 1.0],
+            fuschia : [1, 0, 1, 1.0],
+            yellow : [1, 1, 0, 1.0],
+            teal : [0, 0.5, 0.5, 1.0],
+            aqua : [0, 1, 1, 1.0],
+            olive : [0.5, 0.5, 0.0],
+            black : [0, 0, 0, 1.0],
+            white : [1, 1, 1, 1.0]
+        }
+        choice = map[r] || map.white;
+    } else {
+        // use rgba
+        choice = [r, g, b, a];
+    }
+
+    // code crime but we can make it better later.
+    const layerindex = find(source);
+    var l = alllayers[layerindex];
+    choice.forEach(function(v, i) {
+        l.style.color[i] = v; 
+    })
     refresh(); 
 }
 

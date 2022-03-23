@@ -200,16 +200,20 @@ function find (name) {
 }
 find.local = 1;
 
-function features(source, _name) {
-    addlayer('line', source, _name)
+function features(source, r, g, b, a) {
+    addlayer('line', source, r, g, b, a)
 }
 
-function waveform(source, _name) {
-    addlayer('wave', source, _name)
+function waveform(source, name, r, g, b, a) {
+    addlayer('wave', source, name, r, g, b, a)
 }
 
-function slices(source, reference, _name) {
-    addmarkers(source, reference, _name);
+function slices(source, reference) {
+    addmarkers(source, reference);
+}
+
+function image(source) {
+    addlayer('image', source)
 }
 
 function remove(name) {

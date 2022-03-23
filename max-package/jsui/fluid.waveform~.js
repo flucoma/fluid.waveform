@@ -301,6 +301,10 @@ function addmarkers(source, reference, _name) {
         return
     } 
 
+    if (!bufexists(source)) {
+        error('source buffer does not exist');
+        return
+    }
     if (!reference) {
         post('WARNING: fluid.waveform~ is using a default sampling rate of 44.1kHz for ' + source + '\n');
         reference = 44100;

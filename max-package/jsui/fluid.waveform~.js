@@ -222,8 +222,7 @@ function bufexists(name) {
     return true
 }
 
-function addlayer (type, source, _name) {
-    post(type, source, _name)
+function addlayer(type, source, r, g, b, a) {
     if (!type || !source) error('layer must have a type (symbol) and a source (buffer name)\n');
     
     if (!bufexists(source)) {
@@ -231,7 +230,8 @@ function addlayer (type, source, _name) {
         return
     }
     
-    const index = find(_name ? _name : source); 
+    // find if layer exists in alllayers
+    const index = find(source); 
     
     var layerTypes = {
         'imagebuffer' : 'image',

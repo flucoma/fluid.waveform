@@ -193,10 +193,10 @@ function LayerData() {
 }
 LayerData.local = 1; 
 
-function find (_name) {
-    if (!_name) return null;
+function find (name) {
+    if (!name) return null;
     // this is stricter than parseInt
-    return /^\d+$/.test(_name) ? parseInt(_name) : labels.indexOf(_name);
+    return /^\d+$/.test(name) ? parseInt(name) : labels.indexOf(name);
 }
 find.local = 1;
 

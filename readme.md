@@ -12,8 +12,10 @@ The bits needed to build the Max-JS compatible version of fav.js, assemble the i
 
 ## Building
 
-1. `pnpm|npm|yarn i`
-2. `pnpm|npm|yarn run build`
-3. `pnpm|npm|yarn run bundle`
+You can use whichever package manager you prefer `npm`, `pnpm`, `yarn`. In this case let's pretend we are using `npm`.
+
+1. `npm i`
+2. `npm run build`
+3. `npm run bundle`
 
 Everything you need to use the object in Max should be in the `max_package` subtree. 

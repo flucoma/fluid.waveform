@@ -130,19 +130,22 @@ function MarkersSpec (source, reference) {
     this.refresh = function(){
         if(!this.source) throw "Markers without source buffer" 
         
-        var markers = new Buffer(source); 
-        if(!markers) error("Markers: buffer~", source, "not found!\n")  
+        if (!bufexists(source)) {
+            err('markers buffer does not exist')
+            return
+        }
+        var markers = new Buffer(source);
         var markerdata = markers.peek(1,0,markers.framecount())
         //reference can be either a buffer name or a sampling rate 
         this.fs = null;
         var extent = 0; 
         if(typeof reference === 'string')
         {
-            var refbuf = new Buffer(reference); 
-            if(!refbuf){
-                error("Markers: reference buffer~",reference,"not found!\n"); 
-                return; 
+            if (!bufexists(reference)) {
+                err('reference buffer does not exist')
+                return
             }
+            var refbuf = new Buffer(reference); 
             this.fs = 1000.0 * (refbuf.framecount() / refbuf.length()); 
             extent = refbuf.framecount(); 
             if(markerdata[markerdata.length - 1] < extent) markerdata.push(extent)
@@ -234,11 +237,15 @@ function bufexists(name) {
     return true
 }
 
+function err(msg) {
+    error('fluid.waveform~: ' + msg + '\n')
+}
+
 function addlayer(type, source, r, g, b, a) {
-    if (!type || !source) error('layer must have a type (symbol) and a source (buffer name)\n');
+    if (!type || !source) err('layer must have a type (symbol) and a source (buffer name)');
     
     if (!bufexists(source)) {
-        error('buffer does not exist')
+        err('buffer' + ' "' + source + '" ' + 'does not exist')
         return
     }
     
@@ -311,17 +318,17 @@ function indicesbuffer(source, reference) {
 
 function addmarkers(source, reference) {
     if (!source) {
-        error('marker layer must have a source (buffer)\n');
+        err('marker layer must have a source (buffer)')
         return
     } 
 
     if (!bufexists(source)) {
-        error('source buffer does not exist');
+        err('buffer' + ' "' + source + '" ' + 'does not exist')
         return
     }
 
     if (!reference) {
-        post('WARNING: fluid.waveform~ is using a default sampling rate of 44.1kHz for ' + source + '\n');
+        post('fluid.waveform~: using a default sampling rate of 44.1kHz for ' + source + '\n');
         reference = 44100;
     }
 
@@ -375,7 +382,7 @@ function set () {
     if (typeof layers[index][property] !== 'undefined') {
         alllayers[index][property] = value;
     } else		{
-        error('layer', _name, 'has no property', property, '\n');
+        err('layer ' + _name + 'has no property ' + property)
         dumpobj(layers[index])
     }
 }
@@ -394,8 +401,9 @@ function color()
                 alllayers[index]['style']['color'][i - 1] = args[i]
             }      
             refresh(); 
-        } else error('layer',args[0],'not found\n'); 
-    }else error('color: not enough arguments'); 
+        } else err('layer ' + args[0] + ' not found'); 
+        
+    } else err('not enough color arguments'); 
 }
 
 function selcolor()
@@ -412,8 +420,8 @@ function selcolor()
                 alllayers[index]['style']['selectedcolor'][i - 1] = args[i]
             }      
             refresh(); 
-        } else error('layer',args[0],'not found\n'); 
-    }else error('selcolor: not enough arguments'); 
+        } else err('layer ' + args[0] + ' not found'); 
+    } else err('not enough color arguments'); 
 }
 
 function bgcolor() 
@@ -427,7 +435,7 @@ function bgcolor()
             backgroundcolor[i] = args[i]
         }      
         refresh(); 
-    }else error('bgcolor: not enough arguments'); 
+    } else err('not enough color arguments'); 
 }
 
 function dump () {
@@ -525,11 +533,11 @@ function dictionary (d) {
     
     // There must be an array under root called 'layers'
     if (typeof input['layers'] === 'undefined') 	{
-        error('Parse Error: No layers found\n'); return;
+        err('No layers found')
     }
     
     if (!Array.isArray(input['layers'])) 	{
-        error('Parse Error: layers, expected array\n'); return;
+        err('layers expected array');
     }
     
     input['layers'].forEach(function (l) {

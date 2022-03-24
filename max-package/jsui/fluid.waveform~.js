@@ -59,8 +59,7 @@ var width = box.rect[2] - box.rect[0];
 var height = box.rect[3] - box.rect[1];
 var refreshTask = new Task(refresher,this)
 
-function refresher()
-{
+function refresher() {
     if(arguments.callee.task.object)
     {
         if(redrawNeeded) 
@@ -91,16 +90,13 @@ var mg = null;
 var img = null; 
 var backgroundcolor = [0.254902, 0.254902, 0.254902, 1.]; 
 
-
 init();
 mgraphics.redraw();
 
 function getzoom() { return zoom; }
 function setzoom(z) { redrawNeeded = true; zoom = Math.min(1, Math.max(0, z)) }
-
 function getoffset() { return offset; }
 function setoffset(o){ redrawNeeded = true; offset = Math.min(1,Math.max(0,o))}
-
 function loadbang() {
     init();
 }
@@ -237,6 +233,12 @@ function bufexists(name) {
     return true
 }
 
+function bufempty(name) {
+    var b = new Buffer(name);
+    if (b.framecount() === 0) return true
+    return false
+}
+
 function err(msg) {
     error('fluid.waveform~: ' + msg + '\n')
 }
@@ -310,20 +312,25 @@ function addlayer(type, source, r, g, b, a) {
     refresh(); 
 }
 
-
-
 function indicesbuffer(source, reference) {
-    addmarkers(source, reference);
+    if (typeof source === 'string') {
+        addmarkers(source, reference);
+    }
 }
 
 function addmarkers(source, reference) {
     if (!source) {
-        err('marker layer must have a source (buffer)')
+        err('marker layer must have a source (buffer)');
         return
-    } 
+    }
 
     if (!bufexists(source)) {
-        err('buffer' + ' "' + source + '" ' + 'does not exist')
+        err('buffer' + ' "' + source + '" ' + 'does not exist');
+        return
+    }
+
+    if (bufempty(source)) {
+        err('buffer' + ' "' + source + '" ' + 'is empty');
         return
     }
 
@@ -333,16 +340,13 @@ function addmarkers(source, reference) {
     }
 
     const index = find(source); 
-    if(index < 0)
-    {  
+    if (index < 0) {  
         var l = new MarkersSpec(source, reference) //markerdata,fs,referenceLength)  
         l.type = 'markers';
         markerlayers.push(l);
         alllayers.push(l); 
         labels.push(source);
-    }
-    else 
-    {
+    } else {
         var l = alllayers[index];
         l.source = source; 
         l.reference = reference; 
@@ -387,8 +391,7 @@ function set () {
     }
 }
 
-function color() 
-{
+function color() {
     var args = arrayfromargs(arguments)
     if (args.length >= 2)
     {
@@ -406,8 +409,7 @@ function color()
     } else err('not enough color arguments'); 
 }
 
-function selcolor()
-{
+function selcolor() {
     var args = arrayfromargs(arguments)
     if (args.length >= 2)
     {
@@ -424,8 +426,7 @@ function selcolor()
     } else err('not enough color arguments'); 
 }
 
-function bgcolor() 
-{
+function bgcolor() {
     var args = arrayfromargs(arguments)
     if (args.length >= 1)
     {
@@ -698,15 +699,15 @@ function onidleout (x, y, button, mod1, shift, caps, opt, mod2) {
 
 function onclick (x, y, button, mod1, shift, caps, opt, mod2) {
     
-    if(markerlayers.length > 0)
+    if (markerlayers.length > 0)
     {
         var l = markerlayers[markerlayers.length - 1];       
         var factor = (l.data.length / getWidth()) * zoom;
         var off = Math.min(offset,1 - zoom) * l.data.length;       
         
-        if(shift && !mod1) l.data.add(off + (x * factor));       
-        else if(shift && mod1) 
-        {
+        if(shift && !mod1) {
+            l.data.add(off + (x * factor));
+        } else if (shift && mod1)  {
             //someting should be selected 
             var sel = l.data.data.filter(function(m){return m.selected}); 
             if(sel[0])
@@ -720,7 +721,10 @@ function ondrag (x, y, button, mod1, shift, caps, opt, mod2) {
     markerlayers.forEach(function(l,i){
         l.ondrag(x, y, button, mod1, shift, caps, opt, mod2)
     })
-    redrawNeeded = true; 
+    redrawNeeded = true;
+    var pos = x / (box.rect[2] - box.rect[0]);
+    pos = Math.min(1, Math.max(0, pos));
+    outlet(0, pos);
 }
 
 function onresize (x, y, button, mod1, shift, caps, opt, mod2) {

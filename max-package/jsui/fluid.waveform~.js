@@ -239,6 +239,14 @@ function bufempty(name) {
     return false
 }
 
+function badslicebuf(name) {
+    var b = new Buffer(name);
+    if (b.framecount() === 1 && b.peek(1, 0) === -1.00) {
+        return true
+    }
+    return false
+}
+
 function err(msg) {
     error('fluid.waveform~: ' + msg + '\n')
 }
@@ -336,6 +344,11 @@ function addmarkers(source, reference) {
 
     if (bufempty(source)) {
         err('buffer' + ' "' + source + '" ' + 'is empty');
+        return
+    }
+
+    if (badslicebuf(source)) {
+        err('slices buffer has no valid slice points');
         return
     }
 

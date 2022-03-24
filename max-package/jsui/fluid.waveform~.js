@@ -201,19 +201,27 @@ function find (name) {
 find.local = 1;
 
 function features(source, r, g, b, a) {
-    addlayer('line', source, r, g, b, a)
+    if (typeof source === 'string') {
+        addlayer('line', source, r, g, b, a)
+    }
 }
 
 function waveform(source, name, r, g, b, a) {
-    addlayer('wave', source, name, r, g, b, a)
+    if (typeof source === 'string') {
+        addlayer('wave', source, name, r, g, b, a)
+    }
 }
 
 function slices(source, reference) {
-    addmarkers(source, reference);
+    if (typeof source === 'string') {
+        addmarkers(source, reference);
+    }
 }
 
 function image(source) {
-    addlayer('image', source)
+    if (typeof source === 'string') {
+        addlayer('image', source)
+    }
 }
 
 function remove(name) {

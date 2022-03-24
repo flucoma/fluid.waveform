@@ -247,7 +247,12 @@ function addlayer(type, source, r, g, b, a) {
     if (!type || !source) err('layer must have a type (symbol) and a source (buffer name)');
     
     if (!bufexists(source)) {
-        err('buffer' + ' "' + source + '" ' + 'does not exist')
+        err('buffer' + ' "' + source + '" ' + 'does not exist');
+        return
+    }
+
+    if (bufempty(source)) {
+        err('buffer' + ' "' + source + '" ' + 'is empty');
         return
     }
     

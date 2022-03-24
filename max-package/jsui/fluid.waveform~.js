@@ -727,9 +727,9 @@ function ondrag (x, y, button, mod1, shift, caps, opt, mod2) {
         l.ondrag(x, y, button, mod1, shift, caps, opt, mod2)
     })
     redrawNeeded = true;
-    var pos = x / (box.rect[2] - box.rect[0]);
-    pos = Math.min(1, Math.max(0, pos));
-    outlet(0, pos);
+    var pos = (x / (box.rect[2] - box.rect[0])) * zoom + offset;
+    pos = Math.min(1 * zoom + offset, Math.max(offset, pos));
+    outlet(0, 'position', pos);
 }
 
 function onresize (x, y, button, mod1, shift, caps, opt, mod2) {

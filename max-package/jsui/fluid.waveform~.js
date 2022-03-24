@@ -42,7 +42,7 @@ if (!Array.prototype.fill) {
     });
 }
 
-inlets = 3;
+inlets = 1;
 outlets = 1;
 
 mgraphics.init();

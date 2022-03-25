@@ -219,7 +219,7 @@ function waveform(source, name, r, g, b, a) {
 }
 
 function slices(source, reference) {
-    if (typeof source === 'string') {
+    if (typeof source === 'string' && typeof reference === 'string') {
         addmarkers(source, reference);
     }
 }
@@ -360,8 +360,18 @@ function addmarkers(source, reference) {
     }
 
     if (!reference) {
-        post('fluid.waveform~: using a default sampling rate of 44.1kHz for ' + source + '\n');
-        reference = 44100;
+        err('no reference buffer provided');
+        return
+    }
+
+    if (!bufexists(reference)) {
+        err('reference empty does not exist')
+        return
+    }
+
+    if (bufempty(reference)) {
+        err('reference buffer is empty');
+        return
     }
 
     const index = find(source); 
@@ -621,8 +631,7 @@ function markers () {
     addmarkers(args[0],args[1]);    
 }
 
-function render() 
-{
+function render() {
     mg = new MGraphics(width,height); 
     with(mg){
         init(); 
@@ -634,9 +643,7 @@ function render()
     }
     var size = this.box.rect;
     var off = Math.min(offset,1 - zoom)
-    
-    layers.forEach(function (l, i) 
-    {
+    layers.forEach(function (l, i) {
         var sig =  layerData[i].data ; 
         var zsig = null; 
         

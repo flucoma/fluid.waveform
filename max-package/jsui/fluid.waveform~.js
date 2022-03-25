@@ -380,6 +380,8 @@ function addlayer(type, source, r, g, b, a)
             aqua: [0, 1, 1, 1.0],
             olive: [0.5, 0.5, 0.0],
             black: [0, 0, 0, 1.0],
+            white: [1, 1, 1, 1.0],
+            orange: [1, 0.84, 0.0, 1.0]
         }
         choice = map[r] || map.white;
     }

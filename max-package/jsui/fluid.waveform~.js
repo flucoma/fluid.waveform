@@ -94,9 +94,16 @@ init();
 mgraphics.redraw();
 
 function getzoom() { return zoom; }
-function setzoom(z) { redrawNeeded = true; zoom = Math.min(1, Math.max(0, z)) }
 function getoffset() { return offset; }
-function setoffset(o){ redrawNeeded = true; offset = Math.min(1,Math.max(0,o))}
+function setzoom(amt) { 
+    redrawNeeded = true; 
+    zoom = Math.min(1.0, Math.max(0.000001, amt)) 
+}
+function setoffset(amt){ 
+    redrawNeeded = true; 
+    offset = Math.min(1.0, Math.max(0, amt));
+}
+
 function loadbang() {
     init();
 }

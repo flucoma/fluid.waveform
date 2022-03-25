@@ -145,42 +145,20 @@ function init()
 
 function MarkersSpec(source, reference)
 {
-
-    if (!reference) throw "Markers without reference layer or sample rate"
-
     this.source = source;
     this.reference = reference;
     this.type = 'markers'
-
+    this.fs = null;
     this.refresh = function()
     {
-        if (!this.source) throw "Markers without source buffer"
-
-        if (!bufexists(source))
-        {
-            err('markers buffer does not exist')
-            return
-        }
         var markers = new Buffer(source);
         var markerdata = markers.peek(1, 0, markers.framecount())
-        //reference can be either a buffer name or a sampling rate 
-        this.fs = null;
+        markerdata = typeof markerdata === 'number' ? [markerdata] : markerdata;
         var extent = 0;
-        if (typeof reference === 'string')
         {
-            if (!bufexists(reference))
-            {
-                err('reference buffer does not exist')
-                return
-            }
             var refbuf = new Buffer(reference);
             this.fs = 1000.0 * (refbuf.framecount() / refbuf.length());
             extent = refbuf.framecount();
-            if (markerdata[markerdata.length - 1] < extent) markerdata.push(extent)
-        }
-        else if (typeof reference === 'number')
-        {
-            this.fs = reference;
         }
         if (!this.fs) throw "Markers without sample rate"
         this.data = new Markers(markerdata, this.fs);

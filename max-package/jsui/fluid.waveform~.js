@@ -303,7 +303,7 @@ function bufempty(name)
 function badslicebuf(name)
 {
     var b = new Buffer(name);
-    if (b.framecount() === 1 && b.peek(1, 0) === -1.00)
+    if (b.framecount() === 1 && (b.peek(1, 0) === -1.00 || b.peek(1, 0) === 0.00))
     {
         return true
     }
@@ -380,7 +380,6 @@ function addlayer(type, source, r, g, b, a)
             aqua: [0, 1, 1, 1.0],
             olive: [0.5, 0.5, 0.0],
             black: [0, 0, 0, 1.0],
-            white: [1, 1, 1, 1.0]
         }
         choice = map[r] || map.white;
     }

@@ -425,7 +425,11 @@ function addmarkers(source, reference)
             err('reference buffer is empty');
             return
         }
+    } else if (typeof reference === "number") {
+        if (reference <= 0) {
             err('reference must be a valid sampling rate');
+            return
+        }
     }
 
     if (!bufexists(source))

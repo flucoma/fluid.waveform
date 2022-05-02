@@ -269,7 +269,6 @@ function getBuffer(name)
 function bufexists(name)
 {
     var b = getBuffer(name)
-    if (b === null) return true
     if (b.framecount() === -1 || b === null) return false
     return true
 }
@@ -277,8 +276,7 @@ function bufexists(name)
 function bufempty(name)
 {
     var b = getBuffer(name)
-    if (b === null) return true
-    if (b.framecount() === 0) return true
+    if (b.framecount() === 0 || b === null) return true
     return false
 }
 
@@ -427,6 +425,7 @@ function addmarkers(source, reference)
             err('reference buffer is empty');
             return
         }
+            err('reference must be a valid sampling rate');
     }
 
     if (!bufexists(source))

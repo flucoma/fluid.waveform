@@ -147,6 +147,7 @@ function MarkersSpec(source, reference)
 {
     this.source = source;
     this.reference = reference;
+    this.refIsBuffer = typeof reference === "string" 
     this.type = 'markers'
     this.fs = null;
     this.refresh = function()
@@ -154,13 +155,14 @@ function MarkersSpec(source, reference)
         var markers = new Buffer(source);
         var markerdata = markers.peek(1, 0, markers.framecount())
         markerdata = typeof markerdata === 'number' ? [markerdata] : markerdata;
-        var extent = 0;
         {
-            var refbuf = new Buffer(reference);
-            this.fs = 1000.0 * (refbuf.framecount() / refbuf.length());
-            extent = refbuf.framecount();
+            if (this.refIsBuffer) {
+                var refbuf = new Buffer(reference);
+                this.fs = 1000.0 * (refbuf.framecount() / refbuf.length());
+            } else {
+                this.fs = reference;
+            }
         }
-        if (!this.fs) throw "Markers without sample rate"
         this.data = new Markers(markerdata, this.fs);
         this.length = this.data.length;
     }
@@ -243,14 +245,6 @@ function waveform(source, name, r, g, b, a)
     }
 }
 
-function slices(source, reference)
-{
-    if (typeof source === 'string' && typeof reference === 'string')
-    {
-        addmarkers(source, reference);
-    }
-}
-
 function image(source)
 {
     if (typeof source === 'string')
@@ -264,23 +258,34 @@ function remove(name)
     removelayer(name)
 }
 
+function getBuffer(name) 
+{
+  if(typeof name === 'string') {
+      return new Buffer(name)
+  }
+  return null; 
+}
+
 function bufexists(name)
 {
-    var buf = new Buffer(name);
-    if (buf.framecount() === -1) return false
+    var b = getBuffer(name)
+    if (b === null) return true
+    if (b.framecount() === -1 || b === null) return false
     return true
 }
 
 function bufempty(name)
 {
-    var b = new Buffer(name);
+    var b = getBuffer(name)
+    if (b === null) return true
     if (b.framecount() === 0) return true
     return false
 }
 
 function badslicebuf(name)
 {
-    var b = new Buffer(name);
+    var b = getBuffer(name)
+    if (b === null) return true
     if (b.framecount() === 1 && (b.peek(1, 0) === -1.00 || b.peek(1, 0) === 0.00))
     {
         return true
@@ -378,20 +383,51 @@ function addlayer(type, source, r, g, b, a)
     refresh();
 }
 
+// Different methods for adding slices
+// They all call addmarkers internally
+function slices(source, reference)
+{
+    addmarkers(source, reference);
+}
+
+function markers(source, reference)
+{
+    addmarkers(source, reference);
+}
+
 function indicesbuffer(source, reference)
 {
-    if (typeof source === 'string')
-    {
-        addmarkers(source, reference);
-    }
+    addmarkers(source, reference);
 }
 
 function addmarkers(source, reference)
 {
-    if (!source)
+    // Check that the correct arguments are supplied
+    if (!source && typeof source !== "string")
     {
         err('marker layer must have a source (buffer)');
         return
+    }
+
+    if (!reference)
+    {
+        err('no reference buffer or sample rate provided');
+        return
+    }
+
+    if (typeof reference === "string") {
+        post('doing string')
+        // if (!bufexists(reference))
+        // {
+        //     err('reference empty does not exist')
+        //     return
+        // }
+    
+        // if (bufempty(reference))
+        // {
+        //     err('reference buffer is empty');
+        //     return
+        // }
     }
 
     if (!bufexists(source))
@@ -409,24 +445,6 @@ function addmarkers(source, reference)
     if (badslicebuf(source))
     {
         err('slices buffer has no valid slice points');
-        return
-    }
-
-    if (!reference)
-    {
-        err('no reference buffer provided');
-        return
-    }
-
-    if (!bufexists(reference))
-    {
-        err('reference empty does not exist')
-        return
-    }
-
-    if (bufempty(reference))
-    {
-        err('reference buffer is empty');
         return
     }
 
@@ -742,12 +760,6 @@ getHeight.local = 1;
 function buffer(b)
 {
     addlayer('wave', b);
-}
-
-function markers()
-{
-    var args = arrayfromargs(arguments);
-    addmarkers(args[0], args[1]);
 }
 
 function render()

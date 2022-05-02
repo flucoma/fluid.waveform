@@ -416,18 +416,17 @@ function addmarkers(source, reference)
     }
 
     if (typeof reference === "string") {
-        post('doing string')
-        // if (!bufexists(reference))
-        // {
-        //     err('reference empty does not exist')
-        //     return
-        // }
+        if (!bufexists(reference))
+        {
+            err('reference empty does not exist')
+            return
+        }
     
-        // if (bufempty(reference))
-        // {
-        //     err('reference buffer is empty');
-        //     return
-        // }
+        if (bufempty(reference))
+        {
+            err('reference buffer is empty');
+            return
+        }
     }
 
     if (!bufexists(source))

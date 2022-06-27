@@ -954,7 +954,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 0.0, 26.0, 816.0, 740.0 ],
+						"rect" : [ 35.0, 114.0, 816.0, 740.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 13.0,
@@ -2025,7 +2025,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 35.0, 114.0, 816.0, 740.0 ],
+						"rect" : [ 0.0, 26.0, 816.0, 740.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 13.0,
@@ -2102,7 +2102,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 290.0, 229.0, 300.0, 36.0 ],
+									"patching_rect" : [ 290.0, 229.0, 302.0, 36.0 ],
 									"text" : "draw the slices as markers on top of the waveform with slices <indicesbuffer> <referencebuffer>",
 									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
 								}
@@ -2152,8 +2152,8 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 190.0, 118.0, 174.0, 25.0 ],
-									"text" : "what are we segmenting?",
+									"patching_rect" : [ 190.0, 118.0, 266.0, 25.0 ],
+									"text" : "Paint the buffer~ of audio we will segment",
 									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 								}
 
@@ -2192,7 +2192,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 2,
 									"outlettype" : [ "float", "bang" ],
-									"patching_rect" : [ 595.0, 194.018521547317505, 138.0, 23.0 ],
+									"patching_rect" : [ 640.0, 194.018521547317505, 138.0, 23.0 ],
 									"text" : "buffer~ help.wf.indices"
 								}
 
@@ -2250,7 +2250,7 @@
 									"numoutlets" : 3,
 									"outlettype" : [ "", "", "int" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 370.0, 123.0, 20.0, 20.0 ],
+									"patching_rect" : [ 458.0, 120.0, 20.0, 20.0 ],
 									"rounded" : 60.0,
 									"text" : "1",
 									"textcolor" : [ 0.34902, 0.34902, 0.34902, 1.0 ],
@@ -2395,13 +2395,14 @@
 							}
 , 							{
 								"box" : 								{
+									"bubble" : 1,
 									"id" : "obj-1",
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 374.416674315929413, 204.469072222709656, 214.0, 21.0 ],
+									"patching_rect" : [ 352.416674315929413, 202.969072222709656, 231.0, 25.0 ],
 									"text" : "change the buffer and send refresh ",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 								}
 
 							}
@@ -2439,8 +2440,8 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 210.5, 147.5, 568.0, 25.0 ],
-									"text" : "waveform <buffername> will display a buffer as a waveform. see the layers tab for finer control",
+									"patching_rect" : [ 183.916674315929413, 150.0, 368.0, 25.0 ],
+									"text" : "waveform <buffername> will display a buffer as a waveform",
 									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
 								}
 
@@ -2552,7 +2553,7 @@
 									"numoutlets" : 3,
 									"outlettype" : [ "", "", "int" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 352.416674315929413, 204.469072222709656, 20.0, 20.0 ],
+									"patching_rect" : [ 585.416674315929413, 205.469072222709656, 20.0, 20.0 ],
 									"rounded" : 60.0,
 									"text" : "2",
 									"textcolor" : [ 0.34902, 0.34902, 0.34902, 1.0 ],
@@ -2578,7 +2579,7 @@
 									"numoutlets" : 3,
 									"outlettype" : [ "", "", "int" ],
 									"parameter_enable" : 0,
-									"patching_rect" : [ 186.0, 150.0, 20.0, 20.0 ],
+									"patching_rect" : [ 553.0, 152.5, 20.0, 20.0 ],
 									"rounded" : 60.0,
 									"text" : "1",
 									"textcolor" : [ 0.34902, 0.34902, 0.34902, 1.0 ],

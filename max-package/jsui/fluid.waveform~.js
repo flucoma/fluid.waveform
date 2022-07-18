@@ -931,7 +931,8 @@ function onidle(x, y, button, mod1, shift, caps, opt, mod2)
     {
         var m = disp.layers[i + layers.length]
             .search(l.data.slice(off * l.data.length, l.data.length * (zoom + off)), x);
-        if (m !== null) redrawNeeded = true;
+        
+        redrawNeeded = m !== null;
     });
 }
 

@@ -367,20 +367,21 @@ class MarkerLayer {
   
   search(desc, x)
   {
-    let extent = desc.length
-    let factor = extent / this.canvas.width 
-    let offset = desc.extent[0]
+    let extent = desc.length;
+    let factor = extent / this.canvas.width; 
+    let offset = desc.extent[0];
     let pos = ((x + this.margin/2) * factor) | 0; 
+    let anyselected = false;
     for(let i = 0; i < desc.data.length; i++)
     {
       let y = desc.data[i].position - offset
         desc.data[i].selected = pos > y  - (10 * factor) && pos < y + (10 * factor)       
         if(desc.data[i].selected)
         { 
-          return  desc.data[i]          
+          anyselected = true;
         }
     }  
-    return null    
+    return anyselected;
   }
 }
 

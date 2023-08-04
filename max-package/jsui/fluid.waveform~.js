@@ -464,6 +464,7 @@ function addmarkers(source, reference)
     const index = find(source);
     if (index < 0)
     {
+        checkalllayers();
         var l = new MarkersSpec(source, reference) //markerdata,fs,referenceLength)  
         l.type = 'markers';
         markerlayers.push(l);

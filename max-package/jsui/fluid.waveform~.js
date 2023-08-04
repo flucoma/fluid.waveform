@@ -302,7 +302,6 @@ function checkalllayers() {
         if (!bufexists(source)) {
             err('buffer' + ' "' + source + '" ' + 'no longer exists');
             clear(); //calling clear does fix the buffer renaming bug but it's hacky
-            return
         }
     })
 }

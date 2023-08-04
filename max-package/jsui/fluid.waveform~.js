@@ -269,7 +269,7 @@ function getBuffer(name)
 function bufexists(name)
 {
     var b = getBuffer(name)
-    if (b.framecount() === -1 || b === null) return false
+    if (b === null || b.framecount() === -1) return false
     return true
 }
 
@@ -294,6 +294,18 @@ function badslicebuf(name)
 function err(msg)
 {
     error('fluid.waveform~: ' + msg + '\n')
+}
+
+function checkalllayers() {
+    alllayers.forEach(function (source)
+    {
+        if (!bufexists(source)) {
+            err('buffer' + ' "' + source + '" ' + 'no longer exists');
+            clear(); //calling clear does fix the buffer renaming bug but it's hacky
+            redrawNeeded = true;
+            return
+        }
+    })
 }
 
 function addlayer(type, source, r, g, b, a)
@@ -329,6 +341,7 @@ function addlayer(type, source, r, g, b, a)
     // discern if a new or existing layer
     if (index < 0)
     { // new
+        checkalllayers();
         var l = new LayerSpec();
         l.type = translatedType;
         l.source = source;

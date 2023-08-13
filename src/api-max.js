@@ -41,7 +41,7 @@ Signal.prototype['sample']  = function(step, method = "mean"){
     if(bucketStart > this.data.length - 1 ) bucketStart = this.data.length -1;
     if(bucketEnd > this.data.length -1 ) bucketEnd = this.data.length -1;
     if(bucketStart === bucketEnd) {
-      newData[i]  = i > 0 ? newData[i-1] : this.data[i]; //<------- diff
+      newData[i] = this.data[bucketStart];
     }
     else newData[i]  = stats[method](this.data.slice(bucketStart, bucketEnd));
   }

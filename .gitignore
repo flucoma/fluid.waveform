@@ -2,3 +2,5 @@ node_modules
 fluid.waveform.tar.gz
 /**/fav-max.js
 pnpm-lock.yaml
+.vscode
+.DS_Store

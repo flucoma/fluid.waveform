@@ -1,0 +1,9 @@
+* text=auto
+
+*.gitignore text
+*.js text
+*.json text
+*.maxhelp text
+*.md text
+*.txt text
+*.yaml text

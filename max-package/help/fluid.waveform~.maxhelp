@@ -93,8 +93,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 60.0, 181.0, 21.0 ],
-									"text" : "Customise drawing behaviour",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "Customise drawing behaviour"
 								}
 
 							}
@@ -119,8 +118,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 553.0, 478.0, 114.0, 40.0 ],
-									"text" : "RGBA for background",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "RGBA for background"
 								}
 
 							}
@@ -132,8 +130,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 479.0, 405.5, 121.0, 25.0 ],
-									"text" : "Or RBGA values",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Or RBGA values"
 								}
 
 							}
@@ -145,8 +142,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 268.0, 359.0, 231.0, 25.0 ],
-									"text" : "Prefab colours apply to features too",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Prefab colours apply to features too"
 								}
 
 							}
@@ -221,8 +217,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 190.5, 256.0, 151.0, 25.0 ],
-									"text" : "Create some features",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Create some features"
 								}
 
 							}
@@ -282,8 +277,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 231.0, 178.5, 321.0, 25.0 ],
-									"text" : "Or provide RGBA arguments (between 0.0 and 1.0)",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Or provide RGBA arguments (between 0.0 and 1.0)"
 								}
 
 							}
@@ -333,8 +327,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 111.0, 93.0, 349.0, 25.0 ],
-									"text" : "Choose from prefab colour schemes for your waveforms",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Choose from prefab colour schemes for your waveforms"
 								}
 
 							}
@@ -703,8 +696,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 63.5, 181.0, 21.0 ],
-									"text" : "Display audio features or data",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "Display audio features or data"
 								}
 
 							}
@@ -732,8 +724,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 325.0, 270.433955729007721, 260.0, 36.0 ],
-									"text" : "draw the features as a curve on top of the waveform with features <featurebuffer>.",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "draw the features as a curve on top of the waveform with features <featurebuffer>."
 								}
 
 							}
@@ -745,8 +736,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 173.0, 176.5, 129.0, 25.0 ],
-									"text" : "make some slices",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "make some slices"
 								}
 
 							}
@@ -782,8 +772,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 173.0, 120.0, 174.0, 25.0 ],
-									"text" : "what are we segmenting?",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "what are we segmenting?"
 								}
 
 							}
@@ -991,8 +980,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 70.0, 181.0, 36.0 ],
-									"text" : "Derive mouse position within the waveform~",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "Derive mouse position within the waveform~"
 								}
 
 							}
@@ -1005,8 +993,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 648.0, 243.033995125217928, 106.0, 54.0 ],
-									"text" : "Click and drag around the waveform",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Click and drag around the waveform"
 								}
 
 							}
@@ -1271,8 +1258,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 83.0, 547.5, 412.0, 21.0 ],
-									"text" : "The position in milliseconds within the buffer",
-									"textcolor" : [ 0.501960784313725, 0.501960784313725, 0.501960784313725, 1.0 ]
+									"text" : "The position in milliseconds within the buffer"
 								}
 
 							}
@@ -1332,8 +1318,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 90.0, 396.5, 445.0, 21.0 ],
-									"text" : "the normalized position within the waveform accounting for zoom and offset.",
-									"textcolor" : [ 0.501960784313725, 0.501960784313725, 0.501960784313725, 1.0 ]
+									"text" : "the normalized position within the waveform accounting for zoom and offset."
 								}
 
 							}
@@ -1370,8 +1355,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 168.0, 120.0, 127.0, 25.0 ],
-									"text" : "Draw a waveform",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Draw a waveform"
 								}
 
 							}
@@ -1738,8 +1722,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 63.5, 219.0, 21.0 ],
-									"text" : "Draw images, such as spectrograms",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "Draw images, such as spectrograms"
 								}
 
 							}
@@ -1767,8 +1750,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 346.0, 178.399375200271606, 129.0, 25.0 ],
-									"text" : "draw audio on top",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "draw audio on top"
 								}
 
 							}
@@ -1792,8 +1774,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 36.0, 98.0, 145.0, 25.0 ],
-									"text" : "add a spectrogram",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "add a spectrogram"
 								}
 
 							}
@@ -2061,8 +2042,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 10.0, 63.5, 87.0, 21.0 ],
-									"text" : "Display slices",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "Display slices"
 								}
 
 							}
@@ -2090,8 +2070,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 173.0, 482.033995125217871, 330.0, 79.0 ],
-									"text" : "When patcher is locked:\nHover over a marker to select, click and drag to move. \nShift + Click to add new markers.\nOption + Click to remove markers (macOS).\nAlt + Click to remove markers (Windows).",
-									"textcolor" : [ 0.501960784313725, 0.501960784313725, 0.501960784313725, 1.0 ]
+									"text" : "When patcher is locked:\nHover over a marker to select, click and drag to move. \nShift + Click to add new markers.\nOption + Click to remove markers (macOS).\nAlt + Click to remove markers (Windows)."
 								}
 
 							}
@@ -2103,8 +2082,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 290.0, 229.0, 302.0, 36.0 ],
-									"text" : "draw the slices as markers on top of the waveform with slices <indicesbuffer> <referencebuffer>",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "draw the slices as markers on top of the waveform with slices <indicesbuffer> <referencebuffer>"
 								}
 
 							}
@@ -2116,8 +2094,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 118.0, 155.066044270992279, 129.0, 25.0 ],
-									"text" : "make some slices",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "make some slices"
 								}
 
 							}
@@ -2153,8 +2130,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 190.0, 118.0, 266.0, 25.0 ],
-									"text" : "Paint the buffer~ of audio we will segment",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "Paint the buffer~ of audio we will segment"
 								}
 
 							}
@@ -2361,8 +2337,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 352.416674315929413, 324.403027951717377, 177.0, 21.0 ],
-									"text" : "zoom to zoom, offset to scroll",
-									"textcolor" : [ 0.129411764705882, 0.129411764705882, 0.129411764705882, 0.52 ]
+									"text" : "zoom to zoom, offset to scroll"
 								}
 
 							}
@@ -2401,8 +2376,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 352.416674315929413, 202.969072222709656, 231.0, 25.0 ],
-									"text" : "change the buffer and send refresh ",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "change the buffer and send refresh "
 								}
 
 							}
@@ -2441,8 +2415,7 @@
 									"numinlets" : 1,
 									"numoutlets" : 0,
 									"patching_rect" : [ 183.916674315929413, 150.0, 368.0, 25.0 ],
-									"text" : "waveform <buffername> will display a buffer as a waveform",
-									"textcolor" : [ 0.0, 0.0, 0.0, 1.0 ]
+									"text" : "waveform <buffername> will display a buffer as a waveform"
 								}
 
 							}

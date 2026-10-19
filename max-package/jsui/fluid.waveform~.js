@@ -756,10 +756,10 @@ function onclick(x, y, button, mod1, shift, caps, opt, mod2) {
         var factor = (l.data.length / getWidth()) * zoom;
         var off = Math.min(offset, 1 - zoom) * l.data.length;
 
-        if (shift && !mod1) {
+        if (shift) {
             l.data.add(off + (x * factor));
         }
-        else if (shift && mod1) {
+        else if (opt) {
             //someting should be selected 
             var sel = l.data.data.filter(function (m) {
                 return m.selected
